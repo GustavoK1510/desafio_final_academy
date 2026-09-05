@@ -53,6 +53,7 @@ class ProductRepositoryImpl implements ProductRepository {
 
   @override
   Future<List<Product>> getProducts() async {
+
     /// Selects the 'products' table
     final productMaps = await db.query('products');
 
@@ -158,6 +159,7 @@ class ProductRepositoryImpl implements ProductRepository {
         }
       });
     } catch (e) {
+
       /// If something fails, remove files that were already copied
       for (final path in savedPaths) {
         await imageStorage.delete(path);

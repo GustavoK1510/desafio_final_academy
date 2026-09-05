@@ -1,5 +1,7 @@
 /// Represents the product image
 class ProductImage {
+
+  /// Class constructor
   ProductImage({
     this._id,
     required this._path,

@@ -56,6 +56,7 @@ class DeliveryServiceRepositoryImpl implements DeliveryServiceRepository {
 
   @override
   Future<void> updateDeliveryService(DeliveryService deliveryService) async {
+
     /// Checks if the delivery service has an ID
     if(deliveryService.id == null) {
       throw ArgumentError('Client ID is required to update a client');

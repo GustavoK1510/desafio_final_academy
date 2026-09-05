@@ -38,7 +38,7 @@ class ClientModel extends Client {
       zipCode: map['zip_code'],
       latitude: (map['latitude'] as num).toDouble(),
       longitude: (map['longitude'] as num).toDouble(),
-      businessType: BusinessType.values.byName(map['business_type'] as String) ,
+      businessType: BusinessType.values.byName(map['business_type'] as String),
     );
   }
 
