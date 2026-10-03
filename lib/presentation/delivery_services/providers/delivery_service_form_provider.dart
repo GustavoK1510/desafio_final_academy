@@ -220,7 +220,6 @@ class DeliveryServiceFormProvider extends ChangeNotifier {
 
   @override
   void dispose() {
-
     nameController.dispose();
     cnpjController.dispose();
     companyNameController.dispose();

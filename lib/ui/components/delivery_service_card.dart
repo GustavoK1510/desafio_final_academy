@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/localization/app_localizations.dart';
 import '../../features/delivery_services/domain/entities/delivery_service.dart';
 
 /// Displays a client in the client list.
@@ -24,6 +25,9 @@ class DeliveryServiceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final l10n = AppLocalizations.of(context)!;
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -64,14 +68,14 @@ class DeliveryServiceCard extends StatelessWidget {
                 }
               },
               itemBuilder: (context) {
-                return const [
+                return [
                   PopupMenuItem(
                     value: 'edit',
-                    child: Text('Edit'),
+                    child: Text(l10n.edit),
                   ),
                   PopupMenuItem(
                     value: 'delete',
-                    child: Text('Delete'),
+                    child: Text(l10n.delete),
                   ),
                 ];
               },

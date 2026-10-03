@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import '../../core/localization/app_localizations.dart';
 import '../../features/products/domain/entities/product.dart';
 
 /// Displays a product in the product listing.
@@ -26,6 +27,9 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final l10n = AppLocalizations.of(context)!;
+
     final imagePath = product.images.isNotEmpty
         ? product.images.first.path
         : null;
@@ -72,22 +76,26 @@ class ProductCard extends StatelessWidget {
                 ],
               ),
             ),
-            Column(
-              children: [
-                IconButton(
-                  onPressed: onEdit,
-                  icon: const Icon(Icons.edit_outlined),
-                  tooltip: 'Edit',
-                ),
-                IconButton(
-                  onPressed: onDelete,
-                  icon: Icon(
-                    Icons.delete_outline,
-                    color: Theme.of(context).colorScheme.error,
+            PopupMenuButton<String>(
+              onSelected: (value) {
+                if (value == 'edit') {
+                  onEdit();
+                } else if (value == 'delete') {
+                  onDelete();
+                }
+              },
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem(
+                    value: 'edit',
+                    child: Text(l10n.edit),
                   ),
-                  tooltip: 'Delete',
-                ),
-              ],
+                  PopupMenuItem(
+                    value: 'delete',
+                    child: Text(l10n.delete),
+                  ),
+                ];
+              },
             ),
           ],
         ),
