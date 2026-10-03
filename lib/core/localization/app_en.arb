@@ -91,6 +91,20 @@
   "pleaseEnterCity": "Please enter a city.",
   "pleaseEnterState": "Please enter a state.",
   "clientSaveFailed": "Failed to save the client.",
+  "costPerKilometer": "Cost Per Kilometer",
+  "minimumPrice": "Minimum Delivery Price",
+  "pleaseEnterDeliveryServiceName": "Please enter a delivery service name.",
+  "pleaseEnterKmCost": "Please enter a cost per kilometer.",
+  "pleaseEnterMinimumPrice": "Please enter a minimum delivery price.",
+  "noDeliveryServicesRegistered": "No delivery services registered yet.",
+  "deleteDeliveryService": "Delete Delivery Service",
+  "deleteDeliveryServiceConfirmation": "This action cannot be undone.",
+  "deliveryServiceDeleted": "Delivery Service deleted.",
+  "addDeliveryService": "Add delivery service",
+  "editDeliveryService": "Edit delivery service",
+  "createDeliveryService": "Create delivery service",
+  "deliveryService": "Delivery Services",
+  "deliveryServiceSaveFailed": "Failed to save the delivery service.",
 
 
   "@welcomeStore": {

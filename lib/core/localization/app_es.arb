@@ -78,7 +78,7 @@
   "clientDeleted": "Cliente eliminado.",
   "noClientsRegistered": "No hay clientes registrados todavía.",
   "phone": "Teléfono",
-  "email": "Correo electrónico",
+  "email": "E-mail",
   "cep": "Código postal",
   "pleaseEnterClientName": "Introduce el nombre del cliente.",
   "pleaseEnterCnpj": "Introduce un CNPJ.",
@@ -91,6 +91,21 @@
   "pleaseEnterCity": "Introduce una ciudad.",
   "pleaseEnterState": "Introduce un estado.",
   "clientSaveFailed": "No se pudo guardar el cliente.",
+  "costPerKilometer": "Costo Por Kilómetro",
+  "minimumPrice": "Precio Mínimo De Entrega",
+  "pleaseEnterDeliveryServiceName": "Introduce el nombre del servicio de entriega",
+  "pleaseEnterKmCost": "Introduce un costo por kilómetro.",
+  "pleaseEnterMinimumPrice": "Introduce un precio mínimo de entrega.",
+  "noDeliveryServicesRegistered": "No hay servicios de entriega registrados todavía.",
+  "deleteDeliveryService": "Eliminar servicio de entriega",
+  "deleteDeliveryServiceConfirmation": "Esta acción no se puede deshacer.",
+  "deliveryServiceDeleted": "Servicio de entriega eliminado.",
+  "addDeliveryService": "Agregar servicio de entriega",
+  "editDeliveryService": "Editar servicio de entriega",
+  "createDeliveryService": "Crear servicio de entriega",
+  "deliveryService": "Servicios De Entriega",
+  "deliveryServiceSaveFailed": "No se pudo guardar el servicio de entriega",
+
 
   "@welcomeStore": {
     "placeholders": {

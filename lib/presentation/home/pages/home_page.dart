@@ -117,7 +117,9 @@ class _HomePageContent extends StatelessWidget {
                       icon: Icons.local_shipping_outlined,
                       title: l10n.seeDeliveryServices,
                       subtitle: l10n.manageDeliveries,
-                      onTap: () {},
+                      onTap: () {
+                        context.push('/delivery-services');
+                      },
                     ),
                     menuCard(
                       context,
@@ -205,7 +207,10 @@ class _HomePageContent extends StatelessWidget {
                 Icons.local_shipping_outlined,
               ),
               title: Text(l10n.deliveryServices),
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+                context.push('/delivery-services');
+              },
             ),
             ListTile(
               leading: const Icon(

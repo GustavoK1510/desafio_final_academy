@@ -11,6 +11,8 @@ import 'core/services/geocoding/geocoding_service.dart';
 import 'core/storage/image_storage.dart';
 import 'features/clients/data/repositories/client_repository_impl.dart';
 import 'features/clients/domain/usecases/client_use_case.dart';
+import 'features/delivery_services/data/repositories/delivery_service_repository_impl.dart';
+import 'features/delivery_services/domain/usecases/delivery_service_use_case.dart';
 import 'features/products/data/repositories/product_repository_impl.dart';
 import 'features/products/domain/usecases/product_use_case.dart';
 import 'features/store/data/repositories/store_repository_impl.dart';
@@ -56,9 +58,16 @@ Future<void> main() async {
       geocodingService: geocodingService,
   );
 
+  final deliveryServiceRepository = DeliveryServiceRepositoryImpl(db: database);
+
+  final deliveryServiceUseCase = DeliveryServiceUseCase(
+      repository: deliveryServiceRepository,
+  );
+
   final appRouter = AppRouter(
     productUseCase: productUseCase,
     clientUseCase: clientUseCase,
+    deliveryServiceUseCase: deliveryServiceUseCase,
   );
 
   runApp(

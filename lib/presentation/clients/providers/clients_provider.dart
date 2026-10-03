@@ -5,6 +5,7 @@ import '../../../features/clients/domain/usecases/client_use_case.dart';
 
 /// Manages the client list.
 class ClientsProvider extends ChangeNotifier {
+
   /// Creates a clients provider.
   ClientsProvider({
     required this._useCase,

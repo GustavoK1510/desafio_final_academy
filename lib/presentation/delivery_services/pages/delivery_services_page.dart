@@ -3,64 +3,65 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/localization/app_localizations.dart';
-import '../../../features/clients/domain/entities/client.dart';
-import '../../../features/clients/domain/usecases/client_use_case.dart';
-import '../../../ui/components/client_card.dart';
-import '../providers/clients_provider.dart';
+import '../../../features/delivery_services/domain/entities/delivery_service.dart';
+import '../../../features/delivery_services/domain/usecases/delivery_service_use_case.dart';
+import '../../../ui/components/delivery_service_card.dart';
+import '../providers/delivery_services_provider.dart';
 
-/// Displays the client listing.
-class ClientsPage extends StatelessWidget {
+/// Displays the delivery service listing.
+class DeliveryServicesPage extends StatelessWidget {
 
   /// Class constructor.
-  const ClientsPage({
+  const DeliveryServicesPage({
     required this.useCase,
     super.key,
   });
 
-  /// Client use case.
-  final UseCaseClient useCase;
+  /// Delivery Service use case.
+  final DeliveryServiceUseCase useCase;
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => ClientsProvider(
+      create: (_) => DeliveryServicesProvider(
         useCase: useCase,
-      )..loadClients(),
-      child: const _ClientsContent(),
+      )..loadDeliveryServices(),
+      child: const _DeliveryServicesContent(),
     );
   }
 }
 
-/// Displays the client list content.
-class _ClientsContent extends StatelessWidget {
+/// Displays the delivery service list content.
+class _DeliveryServicesContent extends StatelessWidget {
+
   /// Class constructor.
-  const _ClientsContent();
+  const _DeliveryServicesContent();
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final provider = context.watch<ClientsProvider>();
+    final provider = context.watch<DeliveryServicesProvider>();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.clients),
+        title: Text(l10n.deliveryService),
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           final saved = await context.push<bool>(
-            '/clients/form',
+            '/delivery-services/form',
           );
 
           if (saved == true && context.mounted) {
-            await context.read<ClientsProvider>().loadClients();
+            await context.read<DeliveryServicesProvider>().loadDeliveryServices();
           }
         },
         icon: const Icon(Icons.add),
-        label: Text(l10n.addClient),
+        label: Text(l10n.addDeliveryService),
       ),
       body: RefreshIndicator(
-        onRefresh: provider.loadClients,
+        onRefresh: provider.loadDeliveryServices,
         child: _buildBody(
           context,
           provider,
@@ -71,18 +72,18 @@ class _ClientsContent extends StatelessWidget {
 
   Widget _buildBody(
       BuildContext context,
-      ClientsProvider provider,
+      DeliveryServicesProvider provider,
       ) {
     final l10n = AppLocalizations.of(context)!;
 
-    if (provider.isLoading && provider.clients.isEmpty) {
+    if (provider.isLoading && provider.deliveryServices.isEmpty) {
       return const Center(
         child: CircularProgressIndicator(),
       );
     }
 
     if (provider.errorMessage != null &&
-        provider.clients.isEmpty) {
+        provider.deliveryServices.isEmpty) {
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -94,14 +95,14 @@ class _ClientsContent extends StatelessWidget {
       );
     }
 
-    if (provider.clients.isEmpty) {
+    if (provider.deliveryServices.isEmpty) {
       return ListView(
         children: [
           SizedBox(
             height: MediaQuery.sizeOf(context).height * 0.7,
             child: Center(
               child: Text(
-                l10n.noClientsRegistered,
+                l10n.noDeliveryServicesRegistered,
               ),
             ),
           ),
@@ -116,31 +117,31 @@ class _ClientsContent extends StatelessWidget {
         20,
         100,
       ),
-      itemCount: provider.clients.length,
+      itemCount: provider.deliveryServices.length,
       separatorBuilder: (_, index) {
         return const SizedBox(height: 12);
       },
       itemBuilder: (context, index) {
-        final client = provider.clients[index];
+        final deliveryService = provider.deliveryServices[index];
 
-        return ClientCard(
-          client: client,
+        return DeliveryServiceCard(
+          deliveryService: deliveryService,
           onEdit: () async {
             final saved = await context.push<bool>(
-              '/clients/form',
-              extra: client,
+              '/delivery-services/form',
+              extra: deliveryService,
             );
 
             if (saved == true && context.mounted) {
               await context
-                  .read<ClientsProvider>()
-                  .loadClients();
+                  .read<DeliveryServicesProvider>()
+                  .loadDeliveryServices();
             }
           },
           onDelete: () {
             _confirmDelete(
               context,
-              client,
+              deliveryService,
             );
           },
         );
@@ -150,7 +151,7 @@ class _ClientsContent extends StatelessWidget {
 
   Future<void> _confirmDelete(
       BuildContext context,
-      Client client,
+      DeliveryService deliveryService,
       ) async {
     final l10n = AppLocalizations.of(context)!;
 
@@ -158,9 +159,9 @@ class _ClientsContent extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(l10n.deleteClient),
+          title: Text(l10n.deleteDeliveryService),
           content: Text(
-            l10n.deleteClientConfirmation,
+            l10n.deleteDeliveryServiceConfirmation,
           ),
           actions: [
             TextButton(
@@ -184,15 +185,15 @@ class _ClientsContent extends StatelessWidget {
       return;
     }
 
-    final id = client.id;
+    final id = deliveryService.id;
 
     if (id == null) {
       return;
     }
 
     final success = await context
-        .read<ClientsProvider>()
-        .deleteClient(id);
+        .read<DeliveryServicesProvider>()
+        .deleteDeliveryService(id);
 
     if (!success || !context.mounted) {
       return;
@@ -200,7 +201,7 @@ class _ClientsContent extends StatelessWidget {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(l10n.clientDeleted),
+        content: Text(l10n.deliveryServiceDeleted),
       ),
     );
   }

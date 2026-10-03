@@ -19,8 +19,6 @@ class ProductsPage extends StatelessWidget {
   /// UseCase for Products
   final ProductUseCase useCase;
 
-
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;

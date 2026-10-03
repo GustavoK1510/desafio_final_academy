@@ -282,4 +282,50 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get clientSaveFailed => 'Não foi possível salvar o cliente.';
+
+  @override
+  String get costPerKilometer => 'Custo Por Quilômetro';
+
+  @override
+  String get minimumPrice => 'Frete Mínimo';
+
+  @override
+  String get pleaseEnterDeliveryServiceName =>
+      'Digite um nome para o serviço de entrega.';
+
+  @override
+  String get pleaseEnterKmCost => 'Digite um custo por quilômetro.';
+
+  @override
+  String get pleaseEnterMinimumPrice => 'Digite um frete mínimo.';
+
+  @override
+  String get noDeliveryServicesRegistered =>
+      'Nenhum serviço de entrega cadastrado ainda.';
+
+  @override
+  String get deleteDeliveryService => 'Excluir serviço de entrega';
+
+  @override
+  String get deleteDeliveryServiceConfirmation =>
+      'Esta ação não pode ser desfeita.';
+
+  @override
+  String get deliveryServiceDeleted => 'Serviço de entrega excluído.';
+
+  @override
+  String get addDeliveryService => 'Adicionar serviço de entrega';
+
+  @override
+  String get editDeliveryService => 'Editar serviço de entrega';
+
+  @override
+  String get createDeliveryService => 'Criar serviço de entrega';
+
+  @override
+  String get deliveryService => 'Serviços De Entrega';
+
+  @override
+  String get deliveryServiceSaveFailed =>
+      'Não foi possível salvar o serviço de entrega.';
 }

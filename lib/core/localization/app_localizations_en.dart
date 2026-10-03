@@ -282,4 +282,51 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get clientSaveFailed => 'Failed to save the client.';
+
+  @override
+  String get costPerKilometer => 'Cost Per Kilometer';
+
+  @override
+  String get minimumPrice => 'Minimum Delivery Price';
+
+  @override
+  String get pleaseEnterDeliveryServiceName =>
+      'Please enter a delivery service name.';
+
+  @override
+  String get pleaseEnterKmCost => 'Please enter a cost per kilometer.';
+
+  @override
+  String get pleaseEnterMinimumPrice =>
+      'Please enter a minimum delivery price.';
+
+  @override
+  String get noDeliveryServicesRegistered =>
+      'No delivery services registered yet.';
+
+  @override
+  String get deleteDeliveryService => 'Delete Delivery Service';
+
+  @override
+  String get deleteDeliveryServiceConfirmation =>
+      'This action cannot be undone.';
+
+  @override
+  String get deliveryServiceDeleted => 'Delivery Service deleted.';
+
+  @override
+  String get addDeliveryService => 'Add delivery service';
+
+  @override
+  String get editDeliveryService => 'Edit delivery service';
+
+  @override
+  String get createDeliveryService => 'Create delivery service';
+
+  @override
+  String get deliveryService => 'Delivery Services';
+
+  @override
+  String get deliveryServiceSaveFailed =>
+      'Failed to save the delivery service.';
 }

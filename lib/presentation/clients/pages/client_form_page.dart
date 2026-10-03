@@ -38,6 +38,7 @@ class ClientFormPage extends StatelessWidget {
 
 /// Displays the client form.
 class _ClientFormContent extends StatelessWidget {
+
   /// Class constructor.
   const _ClientFormContent();
 

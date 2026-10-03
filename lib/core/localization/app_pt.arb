@@ -91,6 +91,21 @@
   "pleaseEnterCity": "Digite uma cidade.",
   "pleaseEnterState": "Digite um estado.",
   "clientSaveFailed": "Não foi possível salvar o cliente.",
+  "costPerKilometer": "Custo Por Quilômetro",
+  "minimumPrice": "Frete Mínimo",
+  "pleaseEnterDeliveryServiceName": "Digite um nome para o serviço de entrega.",
+  "pleaseEnterKmCost": "Digite um custo por quilômetro.",
+  "pleaseEnterMinimumPrice": "Digite um frete mínimo.",
+  "noDeliveryServicesRegistered": "Nenhum serviço de entrega cadastrado ainda.",
+  "deleteDeliveryService": "Excluir serviço de entrega",
+  "deleteDeliveryServiceConfirmation": "Esta ação não pode ser desfeita.",
+  "deliveryServiceDeleted": "Serviço de entrega excluído.",
+  "addDeliveryService": "Adicionar serviço de entrega",
+  "editDeliveryService": "Editar serviço de entrega",
+  "createDeliveryService": "Criar serviço de entrega",
+  "deliveryService": "Serviços De Entrega",
+  "deliveryServiceSaveFailed": "Não foi possível salvar o serviço de entrega.",
+
 
   "@welcomeStore": {
     "placeholders": {

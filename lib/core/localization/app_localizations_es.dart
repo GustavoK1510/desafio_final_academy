@@ -246,7 +246,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get phone => 'Teléfono';
 
   @override
-  String get email => 'Correo electrónico';
+  String get email => 'E-mail';
 
   @override
   String get cep => 'Código postal';
@@ -283,4 +283,51 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get clientSaveFailed => 'No se pudo guardar el cliente.';
+
+  @override
+  String get costPerKilometer => 'Costo Por Kilómetro';
+
+  @override
+  String get minimumPrice => 'Precio Mínimo De Entrega';
+
+  @override
+  String get pleaseEnterDeliveryServiceName =>
+      'Introduce el nombre del servicio de entriega';
+
+  @override
+  String get pleaseEnterKmCost => 'Introduce un costo por kilómetro.';
+
+  @override
+  String get pleaseEnterMinimumPrice =>
+      'Introduce un precio mínimo de entrega.';
+
+  @override
+  String get noDeliveryServicesRegistered =>
+      'No hay servicios de entriega registrados todavía.';
+
+  @override
+  String get deleteDeliveryService => 'Eliminar servicio de entriega';
+
+  @override
+  String get deleteDeliveryServiceConfirmation =>
+      'Esta acción no se puede deshacer.';
+
+  @override
+  String get deliveryServiceDeleted => 'Servicio de entriega eliminado.';
+
+  @override
+  String get addDeliveryService => 'Agregar servicio de entriega';
+
+  @override
+  String get editDeliveryService => 'Editar servicio de entriega';
+
+  @override
+  String get createDeliveryService => 'Crear servicio de entriega';
+
+  @override
+  String get deliveryService => 'Servicios De Entriega';
+
+  @override
+  String get deliveryServiceSaveFailed =>
+      'No se pudo guardar el servicio de entriega';
 }

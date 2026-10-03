@@ -645,6 +645,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to save the client.'**
   String get clientSaveFailed;
+
+  /// No description provided for @costPerKilometer.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost Per Kilometer'**
+  String get costPerKilometer;
+
+  /// No description provided for @minimumPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum Delivery Price'**
+  String get minimumPrice;
+
+  /// No description provided for @pleaseEnterDeliveryServiceName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a delivery service name.'**
+  String get pleaseEnterDeliveryServiceName;
+
+  /// No description provided for @pleaseEnterKmCost.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a cost per kilometer.'**
+  String get pleaseEnterKmCost;
+
+  /// No description provided for @pleaseEnterMinimumPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a minimum delivery price.'**
+  String get pleaseEnterMinimumPrice;
+
+  /// No description provided for @noDeliveryServicesRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'No delivery services registered yet.'**
+  String get noDeliveryServicesRegistered;
+
+  /// No description provided for @deleteDeliveryService.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Delivery Service'**
+  String get deleteDeliveryService;
+
+  /// No description provided for @deleteDeliveryServiceConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'This action cannot be undone.'**
+  String get deleteDeliveryServiceConfirmation;
+
+  /// No description provided for @deliveryServiceDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Service deleted.'**
+  String get deliveryServiceDeleted;
+
+  /// No description provided for @addDeliveryService.
+  ///
+  /// In en, this message translates to:
+  /// **'Add delivery service'**
+  String get addDeliveryService;
+
+  /// No description provided for @editDeliveryService.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit delivery service'**
+  String get editDeliveryService;
+
+  /// No description provided for @createDeliveryService.
+  ///
+  /// In en, this message translates to:
+  /// **'Create delivery service'**
+  String get createDeliveryService;
+
+  /// No description provided for @deliveryService.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Services'**
+  String get deliveryService;
+
+  /// No description provided for @deliveryServiceSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to save the delivery service.'**
+  String get deliveryServiceSaveFailed;
 }
 
 class _AppLocalizationsDelegate
