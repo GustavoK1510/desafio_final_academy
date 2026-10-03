@@ -8,17 +8,41 @@ import '../../../features/clients/domain/usecases/client_use_case.dart';
 
 /// Represents validation errors in the client form.
 enum ClientFormError {
+
+  /// Error for name
   nameRequired,
+
+  /// Error for CNPJ
   cnpjRequired,
+
+  /// Error for invalid CNPJ
   invalidCnpj,
+
+  /// Error for company name
   companyNameRequired,
+
+  /// Error for CEP
   cepRequired,
+
+  /// Error for invalid CEP
   invalidCep,
+
+  /// Error for address
   addressRequired,
+
+  /// Error for number
   numberRequired,
+
+  /// Error for city
   cityRequired,
+
+  /// Error for state
   stateRequired,
+
+  /// Error for business type
   businessTypeRequired,
+
+  /// Error while saving
   saveFailed,
 }
 
@@ -36,15 +60,34 @@ class ClientFormProvider extends ChangeNotifier {
   final UseCaseClient _useCase;
   final Client? _client;
 
+  /// Name field controller
   final nameController = TextEditingController();
+
+  /// CNPJ field controller
   final cnpjController = TextEditingController();
+
+  /// Company name field controller
   final companyNameController = TextEditingController();
+
+  /// Phone field controller
   final phoneController = TextEditingController();
+
+  /// Email field controller
   final emailController = TextEditingController();
+
+  /// CEP field controller
   final cepController = TextEditingController();
+
+  /// Street field controller
   final streetController = TextEditingController();
+
+  /// Number field controller
   final numberController = TextEditingController();
+
+  /// City field controller
   final cityController = TextEditingController();
+
+  /// State field controller
   final stateController = TextEditingController();
 
   Timer? _cepTimer;

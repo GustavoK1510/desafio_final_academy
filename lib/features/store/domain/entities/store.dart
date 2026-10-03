@@ -30,27 +30,39 @@ class Store {
   final double _latitude;
   final double _longitude;
 
+  /// Getter for id
   int? get id => _id;
 
+  /// Getter for name
   String get name => _name;
 
+  /// Getter for zip code
   String get zipCode => _zipCode;
 
+  /// Getter for state
   String get state => _state;
 
+  /// Getter for city
   String get city => _city;
 
+  /// Getter for number
   String get number => _number;
 
+  /// Getter for street
   String get street => _street;
 
+  /// Getter for CNPJ
   String get cnpj => _cnpj;
 
+  /// Getter for the logo path
   String get logoPath => _logoPath;
 
+  /// Getter for company name
   String get companyName => _companyName;
 
+  /// Getter for latitude
   double get latitude => _latitude;
 
+  /// Getter for longitude
   double get longitude => _longitude;
 }

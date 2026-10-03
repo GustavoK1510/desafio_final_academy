@@ -33,27 +33,39 @@ class Order {
   final String _paymentObs;
   final List<OrderItem> _orderItems;
 
+  /// Getter for id
   int? get id => _id;
 
+  /// Getter for payment option
   PaymentOption get paymentOption => _paymentOption;
 
+  /// Getter for installments
   int get installments => _installments;
 
+  /// Getter for price
   double get price => _price;
 
+  /// Getter for delivery price
   double get deliveryPrice => _deliveryPrice;
 
+  /// Getter for delivery date
   DateTime get deliveryDate => _deliveryDate;
 
+  /// Getter for the delivery service id
   int get deliveryServiceId => _deliveryServiceId;
 
+  /// Getter for the client id
   int get clientId => _clientId;
 
+  /// Getter for delivery distance
   double get deliveryDistance => _deliveryDistance;
 
+  /// Getter for order observations
   String? get orderObs => _orderObs;
 
+  /// Getter for payment observations
   String get paymentObs => _paymentObs;
 
+  /// Getter for the order items
   List<OrderItem> get orderItems => _orderItems;
 }

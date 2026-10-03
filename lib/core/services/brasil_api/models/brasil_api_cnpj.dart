@@ -14,14 +14,31 @@ class BrasilApiCnpj {
     required this.zipCode,
   });
 
+  /// CNPJ
   final String cnpj;
+
+  /// Company name
   final String companyName;
+
+  /// Trade name
   final String tradeName;
+
+  /// Street
   final String street;
+
+  /// Number
   final String number;
+
+  /// Neighborhood
   final String neighborhood;
+
+  /// City
   final String city;
+
+  /// State
   final String state;
+
+  /// Zip Code
   final String zipCode;
 
   /// Creates a [BrasilApiCnpj] from a BrasilAPI response

@@ -7,13 +7,29 @@ import '../../../features/delivery_services/domain/usecases/delivery_service_use
 
 /// Represents validation errors in the delivery service form.
 enum DeliveryServiceFormError {
+
+  /// Error for name
   nameRequired,
+
+  /// Error for CNPJ
   cnpjRequired,
+
+  /// Error for invalid CNPJ
   invalidCnpj,
+
+  /// Error for company name
   companyNameRequired,
+
+  /// Error for email
   emailRequired,
+
+  /// Error for Cost per kilometer
   kmCostRequired,
+
+  /// Error for minimum price
   minimumPriceRequired,
+
+  /// Error while saving
   saveFailed,
 }
 
@@ -31,12 +47,25 @@ class DeliveryServiceFormProvider extends ChangeNotifier {
   final DeliveryServiceUseCase _useCase;
   final DeliveryService? _deliveryService;
 
+  /// Name field controller
   final nameController = TextEditingController();
+
+  /// CNPJ field controller
   final cnpjController = TextEditingController();
+
+  /// Company name field controller
   final companyNameController = TextEditingController();
+
+  /// Phone field controller
   final phoneController = TextEditingController();
+
+  /// Email field controller
   final emailController = TextEditingController();
+
+  /// Cost per kilometer field controller
   final kmCostController = TextEditingController();
+
+  /// Minimum price field controller
   final minimumPriceController = TextEditingController();
 
   bool _isSaving = false;

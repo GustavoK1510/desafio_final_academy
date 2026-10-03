@@ -54,7 +54,8 @@ class _DeliveryServicesContent extends StatelessWidget {
           );
 
           if (saved == true && context.mounted) {
-            await context.read<DeliveryServicesProvider>().loadDeliveryServices();
+            await context.read<DeliveryServicesProvider>()
+                .loadDeliveryServices();
           }
         },
         icon: const Icon(Icons.add),

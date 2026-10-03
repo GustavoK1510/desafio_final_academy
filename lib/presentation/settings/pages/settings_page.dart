@@ -375,7 +375,7 @@ class _SettingsPageState extends State<SettingsPage> {
       child: SwitchListTile(
         title: Text(l10n.darkMode),
         value: provider.isDarkMode,
-        onChanged: provider.changeDarkMode,
+        onChanged: (value) => provider.changeDarkMode(value: value),
       ),
     );
   }

@@ -10,10 +10,19 @@ class BrasilApiCep {
     required this.state,
   });
 
+  /// CEP
   final String cep;
+
+  /// Street
   final String street;
+
+  /// Neighborhood
   final String neighborhood;
+
+  /// City
   final String city;
+
+  /// State
   final String state;
 
   /// Creates a [BrasilApiCep] from a BrasilAPI response

@@ -1,4 +1,4 @@
-/// represents a payment option
+/// Represents a payment option
 enum PaymentOption {
   /// Paid using a credit card
   creditCard,

@@ -18,13 +18,18 @@ class OrderItem {
   final int _quantity;
   final double _unitPrice;
 
+  /// Getter for id
   int? get id => _id;
 
+  /// Getter for the order id
   int get orderId => _orderId;
 
+  /// Getter for the product id
   int get productId => _productId;
 
+  /// Getter for quantity
   int get quantity => _quantity;
 
+  /// Getter for unit price
   double get unitPrice => _unitPrice;
 }

@@ -7,8 +7,10 @@ class RouteResult {
     required this.points,
   });
 
+  /// Distance
   final double distance;
 
+  /// Points
   final List<RoutePoint> points;
 }
 
@@ -21,7 +23,9 @@ class RoutePoint {
     required this.longitude,
   });
 
+  /// Latitude
   final double latitude;
 
+  /// Longitude
   final double longitude;
 }

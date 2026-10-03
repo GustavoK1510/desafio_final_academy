@@ -6,8 +6,10 @@ class AppSettingsProvider extends ChangeNotifier {
   Locale _locale = const Locale('en', 'US');
   bool _isDarkMode = false;
 
+  /// Getter for the locale
   Locale get locale => _locale;
 
+  /// Getter for the Theme mode
   bool get isDarkMode => _isDarkMode;
 
   /// Loads saved application settings.
@@ -49,7 +51,7 @@ class AppSettingsProvider extends ChangeNotifier {
   }
 
   /// Changes the dark mode state.
-  Future<void> changeDarkMode(bool value) async {
+  Future<void> changeDarkMode({required bool value}) async {
     _isDarkMode = value;
 
     final preferences = await SharedPreferences.getInstance();

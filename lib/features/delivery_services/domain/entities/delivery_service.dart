@@ -22,19 +22,27 @@ class DeliveryService {
   final double _kmCost;
   final double? _minimumPrice;
 
+  /// Getter for id
   int? get id => _id;
 
+  /// Getter for name
   String get name => _name;
 
+  /// Getter for minimum price
   double? get minimumPrice => _minimumPrice;
 
+  /// Getter for cost per kilometer
   double get kmCost => _kmCost;
 
+  /// Getter for email
   String get email => _email;
 
+  /// Getter for phone number
   String? get phoneNumber => _phoneNumber;
 
+  /// Getter for CNPJ
   String get cnpj => _cnpj;
 
+  /// Getter for company name
   String get companyName => _companyName;
 }

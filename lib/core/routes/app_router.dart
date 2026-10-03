@@ -1,5 +1,4 @@
 import 'package:go_router/go_router.dart';
-import 'package:path/path.dart';
 
 import '../../features/clients/domain/entities/client.dart';
 import '../../features/clients/domain/usecases/client_use_case.dart';

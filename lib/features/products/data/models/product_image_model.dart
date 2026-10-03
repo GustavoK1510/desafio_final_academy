@@ -2,6 +2,8 @@ import '../../domain/entities/product_image.dart';
 
 /// Data model for [ProductImage]
 class ProductImageModel extends ProductImage{
+
+  /// Class constructor
   ProductImageModel({
     super.id,
     required super.path,

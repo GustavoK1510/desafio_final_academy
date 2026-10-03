@@ -12,7 +12,12 @@ class ProductImage {
   final String _path;
   final int _productId;
 
+  /// Getter for id
   int? get id => _id;
+
+  /// Getter for the path
   String get path => _path;
+
+  /// Getter for the product id
   int get productId => _productId;
 }

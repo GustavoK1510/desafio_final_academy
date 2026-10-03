@@ -22,17 +22,24 @@ class Product {
   final double _price;
   final List<ProductImage> _images;
 
+  /// Getter for id
   int? get id => _id;
 
+  /// Getter for name
   String get name => _name;
 
+  /// Getter for brand
   String get brand => _brand;
 
+  /// Getter for barcode
   String get barcode => _barcode;
 
+  /// Getter for description
   String? get description => _description;
 
+  /// Getter for price
   double get price => _price;
 
+  /// Getter for the images
   List<ProductImage> get images => _images;
 }
