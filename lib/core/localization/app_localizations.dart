@@ -729,6 +729,192 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to save the delivery service.'**
   String get deliveryServiceSaveFailed;
+
+  /// No description provided for @selectAClient.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a client'**
+  String get selectAClient;
+
+  /// No description provided for @searchByClientNameCNPJToContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by client name or CNPJ to continue.'**
+  String get searchByClientNameCNPJToContinue;
+
+  /// No description provided for @searchClients.
+  ///
+  /// In en, this message translates to:
+  /// **'Search clients'**
+  String get searchClients;
+
+  /// No description provided for @enterNameOrCNPJ.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a name or CNPJ'**
+  String get enterNameOrCNPJ;
+
+  /// No description provided for @clearSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
+  String get clearSearch;
+
+  /// No description provided for @selectedClient.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected client'**
+  String get selectedClient;
+
+  /// No description provided for @noMatchingClientsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching clients found.'**
+  String get noMatchingClientsFound;
+
+  /// No description provided for @searchProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'Search products'**
+  String get searchProducts;
+
+  /// No description provided for @enterAProductName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a product name'**
+  String get enterAProductName;
+
+  /// No description provided for @registeredProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'Registered products'**
+  String get registeredProducts;
+
+  /// No description provided for @couldNotLoadProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load products.'**
+  String get couldNotLoadProducts;
+
+  /// No description provided for @noProductsRegisteredYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No products registered yet.'**
+  String get noProductsRegisteredYet;
+
+  /// No description provided for @noProductsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No products found.'**
+  String get noProductsFound;
+
+  /// No description provided for @quantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get quantity;
+
+  /// No description provided for @decreaseQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Decrease quantity'**
+  String get decreaseQuantity;
+
+  /// No description provided for @increaseQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Increase quantity'**
+  String get increaseQuantity;
+
+  /// No description provided for @add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get add;
+
+  /// No description provided for @cartItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Cart ({quantity} items)'**
+  String cartItems(Object quantity);
+
+  /// No description provided for @addAtLeastOneProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one product to continue.'**
+  String get addAtLeastOneProduct;
+
+  /// No description provided for @removeFromCart.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from cart'**
+  String get removeFromCart;
+
+  /// No description provided for @selectDeliveryService.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a delivery service'**
+  String get selectDeliveryService;
+
+  /// No description provided for @searchByDSNameCNPJToContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by delivery service name or CNPJ to continue.'**
+  String get searchByDSNameCNPJToContinue;
+
+  /// No description provided for @searchDeliveryServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Search delivery services'**
+  String get searchDeliveryServices;
+
+  /// No description provided for @search.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get search;
+
+  /// No description provided for @selectedDeliveryService.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected delivery service'**
+  String get selectedDeliveryService;
+
+  /// No description provided for @totalDeliveryPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Total delivery price'**
+  String get totalDeliveryPrice;
+
+  /// No description provided for @createOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Create order'**
+  String get createOrder;
+
+  /// No description provided for @review.
+  ///
+  /// In en, this message translates to:
+  /// **'Review'**
+  String get review;
+
+  /// No description provided for @finishOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish order'**
+  String get finishOrder;
+
+  /// No description provided for @next.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get next;
+
+  /// No description provided for @noMatchingDeliveryServicesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching delivery services found.'**
+  String get noMatchingDeliveryServicesFound;
 }
 
 class _AppLocalizationsDelegate

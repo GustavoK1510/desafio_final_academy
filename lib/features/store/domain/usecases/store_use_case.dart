@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:geocoding/geocoding.dart';
+
 import '../../../../core/services/geocoding/geocoding_service.dart';
 import '../entities/store.dart';
 import '../repositories/store_repository.dart';
@@ -88,6 +90,21 @@ class StoreUseCase {
   /// Deletes the [Store]
   Future<void> deleteStore(int storeId) async {
     await _repository.deleteStore(storeId);
+  }
+
+  /// Retrieves coordinates for an address.
+  Future<Location> getCoordinates({
+    required String street,
+    required String number,
+    required String city,
+    required String state,
+  }) {
+    return _geocodingService.getCoordinates(
+      street: street,
+      number: number,
+      city: city,
+      state: state,
+    );
   }
 
 }

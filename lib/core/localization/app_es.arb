@@ -106,10 +106,47 @@
   "deliveryService": "Servicios De Entriega",
   "deliveryServiceSaveFailed": "No se pudo guardar el servicio de entriega",
 
+  "selectAClient": "Selecciona un cliente",
+  "searchByClientNameCNPJToContinue": "Busca por nombre de cliente o CNPJ para continuar.",
+  "searchClients": "Buscar clientes",
+  "enterNameOrCNPJ": "Introduce un nombre o CNPJ",
+  "clearSearch": "Borrar búsqueda",
+  "selectedClient": "Cliente seleccionado",
+  "noMatchingClientsFound": "No se encontraron clientes que coincidan.",
+  "searchProducts": "Buscar productos",
+  "enterAProductName": "Introduce el nombre de un producto",
+  "registeredProducts": "Productos registrados",
+  "couldNotLoadProducts": "No se pudieron cargar los productos.",
+  "noProductsRegisteredYet": "Aún no hay productos registrados.",
+  "noProductsFound": "No se encontraron productos.",
+  "quantity": "Cantidad",
+  "decreaseQuantity": "Disminuir cantidad",
+  "increaseQuantity": "Aumentar cantidad",
+  "add": "Agregar",
+  "cartItems": "Carro ({quantity} elementos)",
+  "addAtLeastOneProduct": "Añade al menos un producto para continuar.",
+  "removeFromCart": "Eliminar del carrito",
+  "selectDeliveryService": "Selecciona un servicio de entrega",
+  "searchByDSNameCNPJToContinue": "Busca por el nombre del servicio de entrega o por el CNPJ para continuar.",
+  "searchDeliveryServices": "Buscar servicios de entrega",
+  "search": "Buscar",
+  "selectedDeliveryService": "Servicio de entrega seleccionado",
+  "totalDeliveryPrice": "Precio total de entrega",
+  "createOrder": "Crear pedido",
+  "review": "Revisar",
+  "finishOrder": "Finalizar pedido",
+  "next": "Continuar",
+  "noMatchingDeliveryServicesFound": "No se encontraron servicios de entrega que coincidan.",
 
   "@welcomeStore": {
     "placeholders": {
       "name": {}
     }
-  }
+  },
+
+  "@cartItems": {
+      "placeholders": {
+        "quantity": {}
+      }
+    }
 }

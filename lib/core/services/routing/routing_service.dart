@@ -73,7 +73,7 @@ class RoutingService {
 
     /// Returns the calculated route with its distance and points.
     return RouteResult(
-      distance: distance,
+      distance: distance/1000,
       points: points,
     );
   }

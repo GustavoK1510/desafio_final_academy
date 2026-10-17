@@ -1,17 +1,21 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../features/clients/domain/entities/client.dart';
+import '../../../core/localization/app_localizations.dart';
+import '../../../ui/components/error_message.dart';
+import '../../../ui/components/read_only_field.dart';
 import '../providers/order_form_provider.dart';
 
 /// Displays the client selection step.
 class ClientSelectionTab extends StatelessWidget {
+
   /// Creates the client selection tab.
   const ClientSelectionTab({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final provider = context.watch<OrderFormProvider>();
     final client = provider.selectedClient;
 
@@ -20,7 +24,7 @@ class ClientSelectionTab extends StatelessWidget {
       children: [
 
         Text(
-          'Select a client',
+          l10n.selectAClient,
           style: Theme.of(context).textTheme.headlineSmall,
         ),
 
@@ -40,7 +44,7 @@ class ClientSelectionTab extends StatelessWidget {
             labelText: 'Search clients',
             hintText: 'Enter a name or CNPJ',
             prefixIcon: const Icon(Icons.search),
-            suffixIcon: provider.searchQuery.isNotEmpty
+            suffixIcon: provider.clientSearchQuery.isNotEmpty
                 ? IconButton(
               tooltip: 'Clear search',
               onPressed: () => provider.searchClients(''),
@@ -53,7 +57,7 @@ class ClientSelectionTab extends StatelessWidget {
 
         const SizedBox(height: 12),
 
-        if (provider.isLoading)
+        if (provider.isLoadingClients)
           const Padding(
             padding: EdgeInsets.all(24),
             child: Center(
@@ -62,9 +66,9 @@ class ClientSelectionTab extends StatelessWidget {
           )
 
         else if (provider.errorMessage != null)
-          _ErrorMessage(message: provider.errorMessage!)
+          ErrorMessage(message: provider.errorMessage!)
 
-        else if (provider.searchQuery.trim().isNotEmpty)
+        else if (provider.clientSearchQuery.trim().isNotEmpty)
             _ClientSearchResults(
               clients: provider.filteredClients,
               selectedClient: client,
@@ -81,31 +85,31 @@ class ClientSelectionTab extends StatelessWidget {
 
           const SizedBox(height: 16),
 
-          _ReadOnlyField(
+          ReadOnlyField(
             label: 'Name',
             value: client.name,
           ),
 
           const SizedBox(height: 12),
 
-          _ReadOnlyField(
+          ReadOnlyField(
             label: 'Company Name',
             value: client.companyName,
           ),
 
           const SizedBox(height: 12),
 
-          _ReadOnlyField(
+          ReadOnlyField(
             label: 'CNPJ',
             value: client.cnpj,
           ),
 
           const SizedBox(height: 12),
 
-          _ReadOnlyField(
+          ReadOnlyField(
             label: 'ZIP Code',
             value: client.zipCode,
-          ),
+          )
         ],
       ],
     );
@@ -160,49 +164,6 @@ class _ClientSearchResults extends StatelessWidget {
             },
           );
         }).toList(),
-      ),
-    );
-  }
-}
-
-class _ReadOnlyField extends StatelessWidget {
-  const _ReadOnlyField({
-    required this.label,
-    required this.value,
-  });
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      key: ValueKey('$label-$value'),
-      initialValue: value,
-      readOnly: true,
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: const Icon(Icons.lock_outline),
-        border: const OutlineInputBorder(),
-      ),
-    );
-  }
-}
-
-class _ErrorMessage extends StatelessWidget {
-  const _ErrorMessage({required this.message});
-
-  final String message;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: Text(
-        message,
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.error,
-        ),
       ),
     );
   }

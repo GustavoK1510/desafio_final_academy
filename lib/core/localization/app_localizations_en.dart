@@ -329,4 +329,102 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get deliveryServiceSaveFailed =>
       'Failed to save the delivery service.';
+
+  @override
+  String get selectAClient => 'Select a client';
+
+  @override
+  String get searchByClientNameCNPJToContinue =>
+      'Search by client name or CNPJ to continue.';
+
+  @override
+  String get searchClients => 'Search clients';
+
+  @override
+  String get enterNameOrCNPJ => 'Enter a name or CNPJ';
+
+  @override
+  String get clearSearch => 'Clear search';
+
+  @override
+  String get selectedClient => 'Selected client';
+
+  @override
+  String get noMatchingClientsFound => 'No matching clients found.';
+
+  @override
+  String get searchProducts => 'Search products';
+
+  @override
+  String get enterAProductName => 'Enter a product name';
+
+  @override
+  String get registeredProducts => 'Registered products';
+
+  @override
+  String get couldNotLoadProducts => 'Could not load products.';
+
+  @override
+  String get noProductsRegisteredYet => 'No products registered yet.';
+
+  @override
+  String get noProductsFound => 'No products found.';
+
+  @override
+  String get quantity => 'Quantity';
+
+  @override
+  String get decreaseQuantity => 'Decrease quantity';
+
+  @override
+  String get increaseQuantity => 'Increase quantity';
+
+  @override
+  String get add => 'Add';
+
+  @override
+  String cartItems(Object quantity) {
+    return 'Cart ($quantity items)';
+  }
+
+  @override
+  String get addAtLeastOneProduct => 'Add at least one product to continue.';
+
+  @override
+  String get removeFromCart => 'Remove from cart';
+
+  @override
+  String get selectDeliveryService => 'Select a delivery service';
+
+  @override
+  String get searchByDSNameCNPJToContinue =>
+      'Search by delivery service name or CNPJ to continue.';
+
+  @override
+  String get searchDeliveryServices => 'Search delivery services';
+
+  @override
+  String get search => 'Search';
+
+  @override
+  String get selectedDeliveryService => 'Selected delivery service';
+
+  @override
+  String get totalDeliveryPrice => 'Total delivery price';
+
+  @override
+  String get createOrder => 'Create order';
+
+  @override
+  String get review => 'Review';
+
+  @override
+  String get finishOrder => 'Finish order';
+
+  @override
+  String get next => 'Continue';
+
+  @override
+  String get noMatchingDeliveryServicesFound =>
+      'No matching delivery services found.';
 }

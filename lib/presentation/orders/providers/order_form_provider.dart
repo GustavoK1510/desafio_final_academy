@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/services/routing/routing_service.dart';
 import '../../../features/clients/domain/entities/client.dart';
 import '../../../features/clients/domain/usecases/client_use_case.dart';
+import '../../../features/delivery_services/domain/entities/delivery_service.dart';
+import '../../../features/delivery_services/domain/usecases/delivery_service_use_case.dart';
 import '../../../features/products/domain/entities/product.dart';
 import '../../../features/products/domain/usecases/product_use_case.dart';
+import '../../../features/store/domain/entities/store.dart';
+import '../../../features/store/domain/usecases/store_use_case.dart';
 
 /// Represents a product and its quantity in the order cart.
 class OrderCartItem {
+
   /// Creates a cart item.
   const OrderCartItem({
     required this.product,
@@ -29,22 +35,38 @@ class OrderFormProvider extends ChangeNotifier {
   OrderFormProvider({
     required this._clientUseCase,
     required this._productUseCase,
+    required this._deliveryServiceUseCase,
+    required this._storeUseCase,
+    required this._routingService,
   });
 
   final UseCaseClient _clientUseCase;
   final ProductUseCase _productUseCase;
+  final DeliveryServiceUseCase _deliveryServiceUseCase;
+  final StoreUseCase _storeUseCase;
+  final RoutingService _routingService;
 
   List<Client> _clients = [];
   Client? _selectedClient;
-  String _searchQuery = '';
+  String _clientSearchQuery = '';
   int _currentStep = 0;
-  bool _isLoading = false;
+  bool _isLoadingClients = false;
   String? _errorMessage;
 
   List<Product> _products = [];
   String _productSearchQuery = '';
   bool _isLoadingProducts = false;
   String? _productErrorMessage;
+
+  List<DeliveryService> _deliveryServices = [];
+  DeliveryService? _selectedDeliveryService;
+  String _deliveryServiceSearchQuery = '';
+  bool _isLoadingDeliveryService = false;
+  String? _deliveryServiceErrorMessage;
+  double _deliveryPrice = 0;
+  double _deliveryDistance = 0;
+
+  Store? _store;
 
   final Map<String, int> _selectedQuantities = {};
   final List<OrderCartItem> _cart = [];
@@ -56,13 +78,13 @@ class OrderFormProvider extends ChangeNotifier {
   Client? get selectedClient => _selectedClient;
 
   /// Returns the client search query.
-  String get searchQuery => _searchQuery;
+  String get clientSearchQuery => _clientSearchQuery;
 
   /// Returns the active order step.
   int get currentStep => _currentStep;
 
   /// Indicates whether clients are loading.
-  bool get isLoading => _isLoading;
+  bool get isLoadingClients => _isLoadingClients;
 
   /// Returns the client loading error.
   String? get errorMessage => _errorMessage;
@@ -93,12 +115,38 @@ class OrderFormProvider extends ChangeNotifier {
   /// Returns whether the cart contains at least one item.
   bool get hasProducts => _cart.isNotEmpty;
 
+  /// Returns the registered delivery services
+  List<DeliveryService> get deliveryServices =>
+      List.unmodifiable(_deliveryServices);
+
+  /// Returns the selected delivery service
+  DeliveryService? get selectedDeliveryService => _selectedDeliveryService;
+
+  /// Returns the delivery service search query
+  String get deliveryServiceSearchQuery => _deliveryServiceSearchQuery;
+
+  /// Returns whether delivery services are loading
+  bool get isLoadingDeliveryService => _isLoadingDeliveryService;
+
+  /// Returns the delivery service loading error
+  String? get deliveryServiceErrorMessage => _deliveryServiceErrorMessage;
+
+  /// Return the total delivery price
+  double get deliveryPrice => _deliveryPrice;
+
+  /// Returns the distance between client and the store
+  double get deliveryDistance => _deliveryDistance;
+
+  /// Returns the store
+  Store? get store => _store;
+
   /// Returns clients matching the current query.
   List<Client> get filteredClients {
-    final query = _searchQuery.trim().toLowerCase();
+    final query = _clientSearchQuery.trim().toLowerCase();
 
     if (query.isEmpty) {
-      return [];
+      loadClients();
+      return _clients;
     }
 
     final digits = query.replaceAll(RegExp(r'\D'), '');
@@ -135,9 +183,38 @@ class OrderFormProvider extends ChangeNotifier {
     }).toList();
   }
 
+  /// Returns delivery services matching the current search query
+  List<DeliveryService> get filteredDeliveryServices {
+    final query = _deliveryServiceSearchQuery.trim().toLowerCase();
+
+    if (query.isEmpty) {
+      return [];
+    }
+
+    final digits = query.replaceAll(RegExp(r'\D'), '');
+    final isCnpjSearch =
+        RegExp(r'^[\d./\-\s]+$').hasMatch(query) &&
+            digits.isNotEmpty;
+
+    if (isCnpjSearch && digits.length == 14) {
+      return _deliveryServices.where((deliveryService) {
+        return deliveryService.cnpj.replaceAll(RegExp(r'\D'), '') == digits;
+      }).toList();
+    }
+
+    return _deliveryServices.where((deliveryService) {
+      if (isCnpjSearch) {
+        final cnpj = deliveryService.cnpj.replaceAll(RegExp(r'\D'), '');
+        return cnpj.contains(digits);
+      }
+
+      return deliveryService.name.toLowerCase().contains(query);
+    }).toList();
+  }
+
   /// Loads registered clients.
   Future<void> loadClients() async {
-    _isLoading = true;
+    _isLoadingClients = true;
     _errorMessage = null;
     notifyListeners();
 
@@ -146,7 +223,7 @@ class OrderFormProvider extends ChangeNotifier {
     } catch (error) {
       _errorMessage = error.toString();
     } finally {
-      _isLoading = false;
+      _isLoadingClients = false;
       notifyListeners();
     }
   }
@@ -167,9 +244,25 @@ class OrderFormProvider extends ChangeNotifier {
     }
   }
 
+  /// Loads registered delivery services
+  Future<void> loadDeliveryServices() async {
+    _isLoadingDeliveryService = true;
+    _productErrorMessage = null;
+    notifyListeners();
+
+    try {
+      _deliveryServices = await _deliveryServiceUseCase.getDeliveryServices();
+    } catch (error) {
+      _deliveryServiceErrorMessage = error.toString();
+    } finally {
+      _isLoadingDeliveryService = false;
+      notifyListeners();
+    }
+  }
+
   /// Updates the client search query and clears the selection.
   void searchClients(String query) {
-    _searchQuery = query;
+    _clientSearchQuery = query;
     _selectedClient = null;
     notifyListeners();
   }
@@ -259,6 +352,35 @@ class OrderFormProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Updates the delivery service search query
+  void searchDeliveryServices(String query) {
+    _deliveryServiceSearchQuery = query;
+    _selectedDeliveryService = null;
+    notifyListeners();
+  }
+
+  /// Selects a delivery service for the order
+  Future<void> selectDeliveryService(DeliveryService deliveryService) async {
+    _selectedDeliveryService = deliveryService;
+
+    _store = await _storeUseCase.getStore();
+
+    final route = await _routingService.getRoute(
+      startLatitude: store!.latitude,
+      startLongitude: store!.longitude,
+      endLatitude: _selectedClient!.latitude,
+      endLongitude: _selectedClient!.longitude,
+    );
+
+    _deliveryDistance = route.distance.roundToDouble();
+
+    _deliveryPrice =
+        (_deliveryDistance * _selectedDeliveryService!.kmCost).roundToDouble();
+
+    notifyListeners();
+  }
+
+
   /// Indicates whether the current step can be completed.
   bool get canContinue {
     switch (_currentStep) {
@@ -266,6 +388,8 @@ class OrderFormProvider extends ChangeNotifier {
         return _selectedClient != null;
       case 1:
         return hasProducts;
+      case 2:
+        return _selectedDeliveryService!= null;
       default:
         return false;
     }

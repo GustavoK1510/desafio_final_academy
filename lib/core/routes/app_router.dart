@@ -7,6 +7,7 @@ import '../../features/delivery_services/domain/entities/delivery_service.dart';
 import '../../features/delivery_services/domain/usecases/delivery_service_use_case.dart';
 import '../../features/products/domain/entities/product.dart';
 import '../../features/products/domain/usecases/product_use_case.dart';
+import '../../features/store/domain/usecases/store_use_case.dart';
 import '../../presentation/clients/pages/client_form_page.dart';
 import '../../presentation/clients/pages/clients_page.dart';
 import '../../presentation/delivery_services/pages/delivery_service_form_page.dart';
@@ -16,14 +17,18 @@ import '../../presentation/orders/pages/orders_page.dart';
 import '../../presentation/products/pages/product_form_page.dart';
 import '../../presentation/products/pages/products_page.dart';
 import '../../presentation/settings/pages/settings_page.dart';
+import '../services/routing/routing_service.dart';
 
 /// Provides the application's navigation configuration.
 class AppRouter {
+
   /// Class constructor.
   AppRouter({
     required this.productUseCase,
     required this.clientUseCase,
     required this.deliveryServiceUseCase,
+    required this.storeUseCase,
+    required this.routingService,
   });
 
   /// Product use case.
@@ -34,6 +39,12 @@ class AppRouter {
 
   /// Delivery service use case.
   final DeliveryServiceUseCase deliveryServiceUseCase;
+
+  /// Store use case
+  final StoreUseCase storeUseCase;
+
+  /// Routing service
+  final RoutingService routingService;
 
   /// Router.
   late final GoRouter router = GoRouter(
@@ -123,6 +134,9 @@ class AppRouter {
           return OrdersPage(
             clientUseCase: clientUseCase,
             productUseCase: productUseCase,
+            deliveryServiceUseCase: deliveryServiceUseCase,
+            storeUseCase: storeUseCase,
+            routingService: routingService,
           );
         },
       ),

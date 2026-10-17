@@ -106,10 +106,47 @@
   "deliveryService": "Serviços De Entrega",
   "deliveryServiceSaveFailed": "Não foi possível salvar o serviço de entrega.",
 
+  "selectAClient": "Selecione um cliente",
+  "searchByClientNameCNPJToContinue": "Procure um cliente pelo nome ou CNPJ para continuar.",
+  "searchClients": "Procure clientes",
+  "enterNameOrCNPJ": "Insira um nome ou CNPJ",
+  "clearSearch": "Limpar pesquisa",
+  "selectedClient": "Cliente selecionado",
+  "noMatchingClientsFound": "Nenhum cliente encontrado.",
+  "searchProducts": "Procure produtos",
+  "enterAProductName": "Insira um nome",
+  "registeredProducts": "Produtos registrados",
+  "couldNotLoadProducts": "Não foi possível carregar os produtos.",
+  "noProductsRegisteredYet": "Não há produtos registrados ainda.",
+  "noProductsFound": "Nenhum produto encontrado.",
+  "quantity": "Quantidade",
+  "decreaseQuantity": "Diminuir quantidade",
+  "increaseQuantity": "Aumentar quantidade",
+  "add": "Adicionar",
+  "cartItems": "Carrinho ({quantity} itens)",
+  "addAtLeastOneProduct": "Adicione pelo menos um produto.",
+  "removeFromCart": "Remover do carrinho",
+  "selectDeliveryService": "Selecione um serviço de entrega",
+  "searchByDSNameCNPJToContinue": "Procure um serviço de entrega pelo nome ou CNPJ.",
+  "searchDeliveryServices": "Procure serviços de entrega",
+  "search": "Pesquisar",
+  "selectedDeliveryService": "Serviço de entrega selecionado",
+  "totalDeliveryPrice": "Frete final",
+  "createOrder": "Criar pedido",
+  "review": "Revisão",
+  "finishOrder": "Finalizar pedido",
+  "next": "Continuar",
+  "noMatchingDeliveryServicesFound": "Nenhum serviço de entrega encontrado.",
 
   "@welcomeStore": {
     "placeholders": {
       "name": {}
     }
-  }
+  },
+
+  "@cartItems": {
+      "placeholders": {
+        "quantity": {}
+      }
+    }
 }

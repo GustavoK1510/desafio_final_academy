@@ -328,4 +328,102 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get deliveryServiceSaveFailed =>
       'Não foi possível salvar o serviço de entrega.';
+
+  @override
+  String get selectAClient => 'Selecione um cliente';
+
+  @override
+  String get searchByClientNameCNPJToContinue =>
+      'Procure um cliente pelo nome ou CNPJ para continuar.';
+
+  @override
+  String get searchClients => 'Procure clientes';
+
+  @override
+  String get enterNameOrCNPJ => 'Insira um nome ou CNPJ';
+
+  @override
+  String get clearSearch => 'Limpar pesquisa';
+
+  @override
+  String get selectedClient => 'Cliente selecionado';
+
+  @override
+  String get noMatchingClientsFound => 'Nenhum cliente encontrado.';
+
+  @override
+  String get searchProducts => 'Procure produtos';
+
+  @override
+  String get enterAProductName => 'Insira um nome';
+
+  @override
+  String get registeredProducts => 'Produtos registrados';
+
+  @override
+  String get couldNotLoadProducts => 'Não foi possível carregar os produtos.';
+
+  @override
+  String get noProductsRegisteredYet => 'Não há produtos registrados ainda.';
+
+  @override
+  String get noProductsFound => 'Nenhum produto encontrado.';
+
+  @override
+  String get quantity => 'Quantidade';
+
+  @override
+  String get decreaseQuantity => 'Diminuir quantidade';
+
+  @override
+  String get increaseQuantity => 'Aumentar quantidade';
+
+  @override
+  String get add => 'Adicionar';
+
+  @override
+  String cartItems(Object quantity) {
+    return 'Carrinho ($quantity itens)';
+  }
+
+  @override
+  String get addAtLeastOneProduct => 'Adicione pelo menos um produto.';
+
+  @override
+  String get removeFromCart => 'Remover do carrinho';
+
+  @override
+  String get selectDeliveryService => 'Selecione um serviço de entrega';
+
+  @override
+  String get searchByDSNameCNPJToContinue =>
+      'Procure um serviço de entrega pelo nome ou CNPJ.';
+
+  @override
+  String get searchDeliveryServices => 'Procure serviços de entrega';
+
+  @override
+  String get search => 'Pesquisar';
+
+  @override
+  String get selectedDeliveryService => 'Serviço de entrega selecionado';
+
+  @override
+  String get totalDeliveryPrice => 'Frete final';
+
+  @override
+  String get createOrder => 'Criar pedido';
+
+  @override
+  String get review => 'Revisão';
+
+  @override
+  String get finishOrder => 'Finalizar pedido';
+
+  @override
+  String get next => 'Continuar';
+
+  @override
+  String get noMatchingDeliveryServicesFound =>
+      'Nenhum serviço de entrega encontrado.';
 }

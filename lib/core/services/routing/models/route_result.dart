@@ -3,15 +3,16 @@ class RouteResult {
 
   /// Class constructor
   const RouteResult ({
-    required this.distance,
-    required this.points,
+    required this._distance,
+    required this._points,
   });
 
-  /// Distance
-  final double distance;
+  final double _distance;
+  final List<RoutePoint> _points;
 
-  /// Points
-  final List<RoutePoint> points;
+  double get distance => _distance;
+
+  List<RoutePoint> get points => _points;
 }
 
 /// Represents a Point in the OSRM route
