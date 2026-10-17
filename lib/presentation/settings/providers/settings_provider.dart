@@ -2,44 +2,41 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import '../../../../core/services/brasil_api/brasil_api_service.dart';
+import '../../../../core/utils/cnpj_validator.dart';
 import '../../../../features/store/domain/entities/store.dart';
 import '../../../../features/store/domain/usecases/store_use_case.dart';
 
-/// Manages the state and actions of the settings page.
+/// Manages store settings and verification operations.
 class SettingsProvider extends ChangeNotifier {
-  /// Class constructor.
+  
+  /// Creates the settings provider.
   SettingsProvider({
     required this._storeUseCase,
+    required this._brasilApiService,
   });
 
   final StoreUseCase _storeUseCase;
+  final BrasilApiService _brasilApiService;
 
   Store? _store;
   File? _newLogo;
-
   bool _isLoading = false;
   bool _isSaving = false;
+  bool _isEditing = true;
+  bool _isVerifyingCep = false;
   String? _errorMessage;
 
-  /// The currently saved store.
   Store? get store => _store;
-
-  /// The new logo selected by the user.
   File? get newLogo => _newLogo;
-
-  /// Whether the store is currently being loaded.
   bool get isLoading => _isLoading;
-
-  /// Whether the store is currently being saved.
   bool get isSaving => _isSaving;
-
-  /// The current error message.
+  bool get isEditing => _isEditing;
+  bool get isVerifyingCep => _isVerifyingCep;
   String? get errorMessage => _errorMessage;
-
-  /// Whether a store has already been registered.
   bool get hasStore => _store != null;
 
-  /// Loads the store from the database.
+  /// Loads the saved store.
   Future<void> loadStore() async {
     _isLoading = true;
     _errorMessage = null;
@@ -47,27 +44,86 @@ class SettingsProvider extends ChangeNotifier {
 
     try {
       _store = await _storeUseCase.getStore();
+      _isEditing = _store == null;
     } catch (error, stackTrace) {
       debugPrint('ERROR LOADING STORE: $error');
       debugPrint('STACK TRACE: $stackTrace');
-
       _errorMessage = error.toString();
+      _isEditing = _store == null;
     } finally {
       _isLoading = false;
       notifyListeners();
     }
   }
 
-  /// Selects a new logo.
+  /// Enables editing of an existing store.
+  void startEditing() {
+    if (!hasStore || _isSaving) return;
+
+    _isEditing = true;
+    _errorMessage = null;
+    notifyListeners();
+  }
+
+  /// Cancels editing without saving changes.
+  void cancelEditing() {
+    if (_isSaving || !hasStore) return;
+
+    _newLogo = null;
+    _isEditing = false;
+    _errorMessage = null;
+    notifyListeners();
+  }
+
+  /// Selects a new store logo.
   void selectLogo(File file) {
+    if (!_isEditing || _isSaving) return;
+
     _newLogo = file;
     notifyListeners();
   }
 
-  /// Saves the store information.
-  ///
-  /// Creates the store when one does not exist and updates it when
-  /// a store has already been registered.
+  /// Checks whether a CNPJ has valid check digits.
+  bool verifyCnpj(String cnpj) {
+    return CnpjValidator.isValid(cnpj);
+  }
+
+  /// Looks up a CEP and returns its address details.
+  Future<Map<String, String>?> verifyCep(String cep) async {
+    if (_isVerifyingCep) return null;
+
+    final digits = cep.replaceAll(RegExp(r'\D'), '');
+
+    if (digits.length != 8) {
+      _errorMessage = 'Enter a valid 8-digit CEP.';
+      notifyListeners();
+      return null;
+    }
+
+    _isVerifyingCep = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final address = await _brasilApiService.getCep(digits);
+
+      return {
+        'street': address.street,
+        'city': address.city,
+        'state': address.state,
+      };
+    } catch (error, stackTrace) {
+      debugPrint('ERROR VERIFYING CEP: $error');
+      debugPrint('STACK TRACE: $stackTrace');
+      _errorMessage = 'Could not verify the CEP. Check it and try again.';
+      return null;
+    } finally {
+      _isVerifyingCep = false;
+      notifyListeners();
+    }
+  }
+
+  /// Creates or updates the store.
   Future<bool> saveStore({
     required String name,
     required String companyName,
@@ -78,11 +134,18 @@ class SettingsProvider extends ChangeNotifier {
     required String state,
     required String zipCode,
   }) async {
+    if (_isSaving) return false;
+
     _isSaving = true;
     _errorMessage = null;
     notifyListeners();
 
     try {
+      if (!CnpjValidator.isValid(cnpj)) {
+        _errorMessage = 'Enter a valid CNPJ before saving.';
+        return false;
+      }
+
       if (_store == null) {
         if (_newLogo == null) {
           _errorMessage = 'Please select a store logo.';
@@ -103,10 +166,7 @@ class SettingsProvider extends ChangeNotifier {
           longitude: 0,
         );
 
-        await _storeUseCase.insertStore(
-          store,
-          _newLogo!,
-        );
+        await _storeUseCase.insertStore(store, _newLogo!);
       } else {
         final store = Store(
           id: _store!.id,
@@ -123,22 +183,18 @@ class SettingsProvider extends ChangeNotifier {
           longitude: _store!.longitude,
         );
 
-        await _storeUseCase.updateStore(
-          store,
-          _newLogo,
-        );
+        await _storeUseCase.updateStore(store, _newLogo);
       }
 
       _store = await _storeUseCase.getStore();
       _newLogo = null;
+      _isEditing = false;
 
       return true;
     } catch (error, stackTrace) {
       debugPrint('ERROR SAVING STORE: $error');
       debugPrint('STACK TRACE: $stackTrace');
-
       _errorMessage = error.toString();
-
       return false;
     } finally {
       _isSaving = false;

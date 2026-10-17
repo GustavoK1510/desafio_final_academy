@@ -24,10 +24,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final database = await DatabaseHelper.initializeDatabase();
-
   final imageStorage = ImageStorage();
-
   final geocodingService = GeocodingService();
+  final brasilApiService = BrasilApiService();
 
   final storeRepository = StoreRepositoryImpl(
     db: database,
@@ -50,18 +49,18 @@ Future<void> main() async {
 
   final clientRepository = ClientRepositoryImpl(db: database);
 
-  final brasilApiService = BrasilApiService();
-
   final clientUseCase = UseCaseClient(
-      repository: clientRepository,
-      brasilApiService: brasilApiService,
-      geocodingService: geocodingService,
+    repository: clientRepository,
+    brasilApiService: brasilApiService,
+    geocodingService: geocodingService,
   );
 
-  final deliveryServiceRepository = DeliveryServiceRepositoryImpl(db: database);
+  final deliveryServiceRepository = DeliveryServiceRepositoryImpl(
+    db: database,
+  );
 
   final deliveryServiceUseCase = DeliveryServiceUseCase(
-      repository: deliveryServiceRepository,
+    repository: deliveryServiceRepository,
   );
 
   final appRouter = AppRouter(
@@ -79,30 +78,29 @@ Future<void> main() async {
         ChangeNotifierProvider(
           create: (_) => SettingsProvider(
             storeUseCase: storeUseCase,
+            brasilApiService: brasilApiService,
           )..loadStore(),
         ),
         ChangeNotifierProvider(
-            create: (_) => ProductsProvider(
-              useCase: productUseCase
-            )..loadProducts(),
+          create: (_) => ProductsProvider(
+            useCase: productUseCase,
+          )..loadProducts(),
         ),
       ],
-      child: MyApp(
-        router: appRouter.router,
-      ),
+      child: MyApp(router: appRouter.router),
     ),
   );
 }
 
-/// The App
+/// The application root.
 class MyApp extends StatelessWidget {
-  /// Class constructor
+  /// Creates the application root.
   const MyApp({
     required this.router,
     super.key,
   });
 
-  /// Router instance
+  /// The application router.
   final GoRouter router;
 
   @override
@@ -115,8 +113,7 @@ class MyApp extends StatelessWidget {
       locale: settings.locale,
       localizationsDelegates:
       AppLocalizations.localizationsDelegates,
-      supportedLocales:
-      AppLocalizations.supportedLocales,
+      supportedLocales: AppLocalizations.supportedLocales,
       themeMode: settings.isDarkMode
           ? ThemeMode.dark
           : ThemeMode.light,

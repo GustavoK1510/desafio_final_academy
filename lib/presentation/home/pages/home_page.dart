@@ -12,8 +12,7 @@ import '../providers/home_page_provider.dart';
 
 /// Home page for navigating through the application.
 class HomePage extends StatelessWidget {
-
-  /// Class constructor.
+  /// Creates the home page.
   const HomePage({super.key});
 
   @override
@@ -27,8 +26,7 @@ class HomePage extends StatelessWidget {
 
 /// Displays the home page content.
 class _HomePageContent extends StatelessWidget {
-
-  /// Class constructor.
+  /// Creates the home page content.
   const _HomePageContent();
 
   @override
@@ -37,15 +35,15 @@ class _HomePageContent extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final store = settingsProvider.store;
 
-    final logoFile = store != null && store.logoPath.isNotEmpty
+    final logoFile = store != null &&
+        store.logoPath.isNotEmpty &&
+        File(store.logoPath).existsSync()
         ? File(store.logoPath)
         : null;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          store?.name ?? 'Insert name',
-        ),
+        title: Text(store?.name ?? 'SportZone'),
         centerTitle: true,
       ),
       drawer: _buildDrawer(
@@ -62,7 +60,7 @@ class _HomePageContent extends StatelessWidget {
             children: [
               Text(
                 store != null
-                    ? l10n.welcomeStore('Danilo')
+                    ? l10n.welcomeStore(store.name)
                     : l10n.welcome,
                 style: Theme.of(context)
                     .textTheme
@@ -97,9 +95,7 @@ class _HomePageContent extends StatelessWidget {
                       icon: Icons.inventory_2_outlined,
                       title: l10n.seeProducts,
                       subtitle: l10n.manageProducts,
-                      onTap: () {
-                        context.push('/products');
-                      },
+                      onTap: () => context.push('/products'),
                     ),
                     menuCard(
                       context,
@@ -107,9 +103,7 @@ class _HomePageContent extends StatelessWidget {
                       icon: Icons.people_outline,
                       title: l10n.seeClients,
                       subtitle: l10n.manageClients,
-                      onTap: () {
-                        context.push('/clients');
-                      },
+                      onTap: () => context.push('/clients'),
                     ),
                     menuCard(
                       context,
@@ -117,9 +111,8 @@ class _HomePageContent extends StatelessWidget {
                       icon: Icons.local_shipping_outlined,
                       title: l10n.seeDeliveryServices,
                       subtitle: l10n.manageDeliveries,
-                      onTap: () {
-                        context.push('/delivery-services');
-                      },
+                      onTap: () =>
+                          context.push('/delivery-services'),
                     ),
                     menuCard(
                       context,
@@ -127,7 +120,7 @@ class _HomePageContent extends StatelessWidget {
                       icon: Icons.receipt_long_outlined,
                       title: l10n.seeOrders,
                       subtitle: l10n.manageOrders,
-                      onTap: () {},
+                      onTap: () => context.push('/orders'),
                     ),
                   ],
                 ),
@@ -163,77 +156,78 @@ class _HomePageContent extends StatelessWidget {
                     ? Icon(
                   Icons.store,
                   size: 32,
-                  color: Theme.of(context)
-                      .colorScheme
-                      .primary,
+                  color: Theme.of(context).colorScheme.primary,
                 )
                     : null,
               ),
               accountName: Text(
-                store?.name ?? 'Insert name',
-                style: TextStyle(
-                  color: Colors.black,
-                ),
+                store?.name ?? 'SportZone',
+                style: const TextStyle(color: Colors.black),
               ),
               accountEmail: Text(
                 store?.companyName ?? '',
-                style: TextStyle(
-                  color: Colors.black,
-                ),
+                style: const TextStyle(color: Colors.black),
               ),
             ),
             ListTile(
-              leading: const Icon(
-                Icons.inventory_2_outlined,
-              ),
+              leading: const Icon(Icons.inventory_2_outlined),
               title: Text(l10n.products),
-              onTap: () {
-                Navigator.pop(context);
-                context.push('/products');
-              },
+              onTap: () => _navigateFromDrawer(
+                context,
+                '/products',
+              ),
             ),
             ListTile(
-              leading: const Icon(
-                Icons.people_outline,
-              ),
+              leading: const Icon(Icons.people_outline),
               title: Text(l10n.clients),
-              onTap: () {
-                Navigator.pop(context);
-                context.push('/clients');
-              },
+              onTap: () => _navigateFromDrawer(
+                context,
+                '/clients',
+              ),
             ),
             ListTile(
-              leading: const Icon(
-                Icons.local_shipping_outlined,
-              ),
+              leading: const Icon(Icons.local_shipping_outlined),
               title: Text(l10n.deliveryServices),
-              onTap: () {
-                Navigator.pop(context);
-                context.push('/delivery-services');
-              },
+              onTap: () => _navigateFromDrawer(
+                context,
+                '/delivery-services',
+              ),
             ),
             ListTile(
-              leading: const Icon(
-                Icons.receipt_long_outlined,
-              ),
+              leading: const Icon(Icons.receipt_long_outlined),
               title: Text(l10n.orders),
-              onTap: () {},
+              onTap: () => _navigateFromDrawer(
+                context,
+                '/orders',
+              ),
             ),
             const Spacer(),
             const Divider(),
             ListTile(
-              leading: const Icon(
-                Icons.settings_outlined,
-              ),
+              leading: const Icon(Icons.settings_outlined),
               title: Text(l10n.settings),
-              onTap: () {
-                Navigator.pop(context);
-                context.push('/settings');
-              },
+              onTap: () => _navigateFromDrawer(
+                context,
+                '/settings',
+              ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  /// Closes the drawer before navigating to another page.
+  void _navigateFromDrawer(
+      BuildContext context,
+      String route,
+      ) {
+    Navigator.of(context).pop();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (context.mounted) {
+        context.push(route);
+      }
+    });
   }
 }

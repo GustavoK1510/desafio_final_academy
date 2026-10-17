@@ -1,3 +1,4 @@
+
 import 'package:go_router/go_router.dart';
 
 import '../../features/clients/domain/entities/client.dart';
@@ -11,6 +12,7 @@ import '../../presentation/clients/pages/clients_page.dart';
 import '../../presentation/delivery_services/pages/delivery_service_form_page.dart';
 import '../../presentation/delivery_services/pages/delivery_services_page.dart';
 import '../../presentation/home/pages/home_page.dart';
+import '../../presentation/orders/pages/orders_page.dart';
 import '../../presentation/products/pages/product_form_page.dart';
 import '../../presentation/products/pages/products_page.dart';
 import '../../presentation/settings/pages/settings_page.dart';
@@ -27,10 +29,10 @@ class AppRouter {
   /// Product use case.
   final ProductUseCase productUseCase;
 
-  /// Client use case
+  /// Client use case.
   final UseCaseClient clientUseCase;
 
-  /// Delivery Service use case
+  /// Delivery service use case.
   final DeliveryServiceUseCase deliveryServiceUseCase;
 
   /// Router.
@@ -54,7 +56,7 @@ class AppRouter {
         },
         routes: [
           GoRoute(
-            path: '/form',
+            path: 'form',
             name: 'product-form',
             builder: (context, state) {
               final product = state.extra as Product?;
@@ -67,15 +69,6 @@ class AppRouter {
           ),
         ],
       ),
-
-      GoRoute(
-        path: '/settings',
-        name: 'settings',
-        builder: (context, state) {
-          return const SettingsPage();
-        },
-      ),
-
       GoRoute(
         path: '/clients',
         name: 'clients',
@@ -86,7 +79,7 @@ class AppRouter {
         },
         routes: [
           GoRoute(
-            path: '/form',
+            path: 'form',
             name: 'client-form',
             builder: (context, state) {
               final client = state.extra as Client?;
@@ -99,31 +92,47 @@ class AppRouter {
           ),
         ],
       ),
-
       GoRoute(
         path: '/delivery-services',
         name: 'delivery-services',
         builder: (context, state) {
           return DeliveryServicesPage(
-              useCase: deliveryServiceUseCase,
+            useCase: deliveryServiceUseCase,
           );
         },
         routes: [
           GoRoute(
-            path: '/form',
+            path: 'form',
             name: 'delivery-services-form',
             builder: (context, state) {
-              final deliveryService = state.extra as DeliveryService?;
+              final deliveryService =
+              state.extra as DeliveryService?;
 
               return DeliveryServiceFormPage(
                 useCase: deliveryServiceUseCase,
                 deliveryService: deliveryService,
               );
-            }
+            },
           ),
-        ]
+        ],
+      ),
+      GoRoute(
+        path: '/orders',
+        name: 'orders',
+        builder: (context, state) {
+          return OrdersPage(
+            clientUseCase: clientUseCase,
+            productUseCase: productUseCase,
+          );
+        },
+      ),
+      GoRoute(
+        path: '/settings',
+        name: 'settings',
+        builder: (context, state) {
+          return const SettingsPage();
+        },
       ),
     ],
   );
-
 }
