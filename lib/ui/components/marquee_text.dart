@@ -5,6 +5,7 @@ import '../../presentation/home/providers/home_page_provider.dart';
 
 /// Displays text that scrolls when it does not fit.
 class MarqueeText extends StatefulWidget {
+
   /// Class constructor.
   const MarqueeText({
     required this.id,

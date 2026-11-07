@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../ui/components/order_card.dart';
+import '../../../core/localization/app_localizations.dart';
 import '../../../core/services/order_receipt/order_receipt_pdf_service.dart';
 import '../../../features/clients/domain/usecases/client_use_case.dart';
 import '../../../features/delivery_services/domain/usecases/delivery_service_use_case.dart';
@@ -13,6 +14,8 @@ import '../providers/orders_provider.dart';
 
 /// Displays the registered orders and their available actions.
 class OrdersListingPage extends StatelessWidget {
+
+  /// Class constructor
   const OrdersListingPage({
     super.key,
     required this.orderUseCase,
@@ -22,10 +25,19 @@ class OrdersListingPage extends StatelessWidget {
     required this.storeUseCase,
   });
 
+  /// Order Use Case
   final OrderUseCase orderUseCase;
+
+  /// Client Use Case
   final UseCaseClient clientUseCase;
+
+  /// Delivery Service Use Case
   final DeliveryServiceUseCase deliveryServiceUseCase;
+
+  /// Product Use Case
   final ProductUseCase productUseCase;
+
+  /// Store Use Case
   final StoreUseCase storeUseCase;
 
   @override
@@ -46,15 +58,18 @@ class OrdersListingPage extends StatelessWidget {
 
 /// Builds the orders listing using the provider.
 class OrdersListingView extends StatelessWidget {
+
+  /// Class constructor
   const OrdersListingView({super.key});
 
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<OrdersProvider>();
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Orders'),
+        title: Text(l10n.orders),
       ),
       body: Column(
         children: [
@@ -178,6 +193,8 @@ class OrdersListingView extends StatelessWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (dialogContext) {
+        final l10n = AppLocalizations.of(context)!;
+
         return AlertDialog(
           title: const Text('Delete order'),
           content: const Text(
@@ -188,14 +205,14 @@ class OrdersListingView extends StatelessWidget {
               onPressed: () {
                 Navigator.pop(dialogContext, false);
               },
-              child: const Text('Cancel'),
+              child: Text(l10n.cancel),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(dialogContext, true);
               },
-              child: const Text(
-                'Delete',
+              child: Text(
+                l10n.delete,
                 style: TextStyle(color: Colors.red),
               ),
             ),

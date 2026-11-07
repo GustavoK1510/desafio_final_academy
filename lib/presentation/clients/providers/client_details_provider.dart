@@ -5,6 +5,8 @@ import '../../../features/clients/domain/entities/client.dart';
 
 /// Provides the client displayed on the details page.
 class ClientDetailsProvider extends ChangeNotifier {
+
+  /// Class constructor
   ClientDetailsProvider({
     required this._client,
   });

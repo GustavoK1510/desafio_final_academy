@@ -87,7 +87,6 @@ class _OrdersContent extends StatelessWidget {
           isScrollable: true,
           onTap: (index) {
             if (index > provider.currentStep) {
-              controller.animateTo(provider.currentStep);
               return;
             }
 
@@ -134,7 +133,7 @@ class _OrdersContent extends StatelessWidget {
                 child: SizedBox(
                   width: double.infinity,
                   child: FilledButton(
-                    onPressed: provider.canContinue
+                    onPressed: context.watch<OrderFormProvider>().canContinue
                         ? () {
                       provider.continueToNextStep();
                       controller.animateTo(provider.currentStep);

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../../../core/utils/cnpj_validator.dart';
 import '../../../features/clients/domain/entities/client.dart';
 import '../../../features/clients/domain/enums/business_type.dart';
 import '../../../features/clients/domain/usecases/client_use_case.dart';
@@ -196,81 +197,6 @@ class ClientFormProvider extends ChangeNotifier {
     stateController.clear();
   }
 
-  /// Validates a Brazilian CNPJ.
-  bool isValidCnpj(String value) {
-    final cnpj = value.replaceAll(RegExp(r'\D'), '');
-
-    if (cnpj.length != 14) {
-      return false;
-    }
-
-    if (RegExp(r'^(\d)\1{13}$').hasMatch(cnpj)) {
-      return false;
-    }
-
-    final firstWeights = [
-      5,
-      4,
-      3,
-      2,
-      9,
-      8,
-      7,
-      6,
-      5,
-      4,
-      3,
-      2,
-    ];
-
-    final secondWeights = [
-      6,
-      5,
-      4,
-      3,
-      2,
-      9,
-      8,
-      7,
-      6,
-      5,
-      4,
-      3,
-      2,
-    ];
-
-    final firstDigit = _calculateDigit(
-      cnpj.substring(0, 12),
-      firstWeights,
-    );
-
-    if (firstDigit != int.parse(cnpj[12])) {
-      return false;
-    }
-
-    final secondDigit = _calculateDigit(
-      cnpj.substring(0, 13),
-      secondWeights,
-    );
-
-    return secondDigit == int.parse(cnpj[13]);
-  }
-
-  int _calculateDigit(
-      String value,
-      List<int> weights,
-      ) {
-    var sum = 0;
-
-    for (var i = 0; i < value.length; i++) {
-      sum += int.parse(value[i]) * weights[i];
-    }
-
-    final remainder = sum % 11;
-
-    return remainder < 2 ? 0 : 11 - remainder;
-  }
-
   /// Saves the client.
   Future<bool> saveClient({
     required BusinessType businessType,
@@ -303,7 +229,7 @@ class ClientFormProvider extends ChangeNotifier {
         return false;
       }
 
-      if (!isValidCnpj(cnpj)) {
+      if (!CnpjValidator.isValid(cnpj)) {
         _error = ClientFormError.invalidCnpj;
         return false;
       }

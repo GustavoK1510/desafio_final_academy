@@ -254,8 +254,7 @@ class ProductSelectionTab extends StatelessWidget {
                               onChanged: (value) {
                                 final percentage = double.tryParse(
                                   value.replaceAll(',', '.'),
-                                ) ??
-                                    0;
+                                ) ?? 0;
 
                                 provider.setProductDiscount(
                                   item.product,

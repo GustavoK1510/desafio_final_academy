@@ -6,6 +6,7 @@ import '../../../core/localization/app_localizations.dart';
 import '../../../features/clients/domain/entities/client.dart';
 import '../../../features/clients/domain/enums/business_type.dart';
 import '../../../features/clients/domain/usecases/client_use_case.dart';
+import '../../../ui/components/my_text_field.dart';
 import '../providers/client_form_provider.dart';
 
 /// Displays the client creation and editing form.
@@ -62,33 +63,34 @@ class _ClientFormContent extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildTextField(
+              myTextField(
                 controller: provider.nameController,
                 label: l10n.name,
                 icon: Icons.person_outline,
               ),
               const SizedBox(height: 16),
-              _buildTextField(
+              myTextField(
                 controller: provider.cnpjController,
                 label: l10n.cnpj,
                 icon: Icons.badge_outlined,
+                maxLength: 14,
                 keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 16),
-              _buildTextField(
+              myTextField(
                 controller: provider.companyNameController,
                 label: l10n.companyName,
                 icon: Icons.business_outlined,
               ),
               const SizedBox(height: 16),
-              _buildTextField(
+              myTextField(
                 controller: provider.phoneController,
                 label: l10n.phone,
                 icon: Icons.phone_outlined,
                 keyboardType: TextInputType.phone,
               ),
               const SizedBox(height: 16),
-              _buildTextField(
+              myTextField(
                 controller: provider.emailController,
                 label: l10n.email,
                 icon: Icons.email_outlined,
@@ -100,14 +102,14 @@ class _ClientFormContent extends StatelessWidget {
                 provider,
               ),
               const SizedBox(height: 16),
-              _buildTextField(
+              myTextField(
                 controller: provider.streetController,
                 label: l10n.street,
                 icon: Icons.location_on_outlined,
                 enabled: provider.addressLoaded,
               ),
               const SizedBox(height: 16),
-              _buildTextField(
+              myTextField(
                 controller: provider.numberController,
                 label: l10n.number,
                 icon: Icons.numbers_outlined,
@@ -115,14 +117,14 @@ class _ClientFormContent extends StatelessWidget {
                 keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 16),
-              _buildTextField(
+              myTextField(
                 controller: provider.cityController,
                 label: l10n.city,
                 icon: Icons.location_city_outlined,
                 enabled: provider.addressLoaded,
               ),
               const SizedBox(height: 16),
-              _buildTextField(
+              myTextField(
                 controller: provider.stateController,
                 label: l10n.state,
                 icon: Icons.map_outlined,
@@ -175,25 +177,6 @@ class _ClientFormContent extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String label,
-    required IconData icon,
-    bool enabled = true,
-    TextInputType? keyboardType,
-  }) {
-    return TextField(
-      controller: controller,
-      enabled: enabled,
-      keyboardType: keyboardType,
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(icon),
-        border: const OutlineInputBorder(),
       ),
     );
   }

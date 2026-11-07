@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 /// Displays and manages product images.
 class ProductImagePicker extends StatelessWidget {
+
   /// Class constructor.
   const ProductImagePicker({
     required this.existingImages,

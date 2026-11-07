@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../core/localization/app_localizations.dart';
 import '../../../features/delivery_services/domain/entities/delivery_service.dart';
 import '../../../features/delivery_services/domain/usecases/delivery_service_use_case.dart';
+import '../../../ui/components/my_text_field.dart';
 import '../providers/delivery_service_form_provider.dart';
 
 /// Displays the delivery service creation and editing form.
@@ -61,50 +62,54 @@ class _DeliveryServiceFormContent extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildTextField(
+              myTextField(
                 controller: provider.nameController,
                 label: l10n.name,
                 icon: Icons.person_outline,
               ),
               const SizedBox(height: 16),
-              _buildTextField(
+              myTextField(
                 controller: provider.cnpjController,
                 label: l10n.cnpj,
                 icon: Icons.badge_outlined,
+                maxLength: 14,
                 keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 16),
-              _buildTextField(
+              myTextField(
                 controller: provider.companyNameController,
                 label: l10n.companyName,
                 icon: Icons.business_outlined,
               ),
               const SizedBox(height: 16),
-              _buildTextField(
+              myTextField(
                 controller: provider.phoneController,
                 label: l10n.phone,
                 icon: Icons.phone_outlined,
+                maxLength: 11,
                 keyboardType: TextInputType.phone,
               ),
               const SizedBox(height: 16),
-              _buildTextField(
+              myTextField(
                 controller: provider.emailController,
                 label: l10n.email,
                 icon: Icons.email_outlined,
                 keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 16),
-              _buildTextField(
+              myTextField(
                 controller: provider.kmCostController,
                 label: l10n.costPerKilometer,
                 icon: Icons.attach_money_outlined,
+                maxLength: 4,
                 keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 16),
-              _buildTextField(
+              myTextField(
                 controller: provider.minimumPriceController,
                 label: l10n.minimumPrice,
                 icon: Icons.price_check_outlined,
+                maxLength: 4,
                 keyboardType: TextInputType.number,
               ),
               if (provider.error != null) ...[
@@ -145,25 +150,6 @@ class _DeliveryServiceFormContent extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String label,
-    required IconData icon,
-    bool enabled = true,
-    TextInputType? keyboardType,
-  }) {
-    return TextField(
-      controller: controller,
-      enabled: enabled,
-      keyboardType: keyboardType,
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(icon),
-        border: const OutlineInputBorder(),
       ),
     );
   }

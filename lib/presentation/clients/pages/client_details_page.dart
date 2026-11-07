@@ -6,11 +6,14 @@ import '../providers/client_details_provider.dart';
 
 /// Displays all information about a client.
 class ClientDetailsPage extends StatelessWidget {
+
+  /// Class constructor
   const ClientDetailsPage({
     required this.client,
     super.key,
   });
 
+  /// Current client
   final Client client;
 
   @override

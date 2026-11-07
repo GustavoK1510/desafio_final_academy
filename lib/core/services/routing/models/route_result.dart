@@ -10,8 +10,10 @@ class RouteResult {
   final double _distance;
   final List<RoutePoint> _points;
 
+  /// Returns the distance
   double get distance => _distance;
 
+  /// Returns the points
   List<RoutePoint> get points => _points;
 }
 

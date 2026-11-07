@@ -27,13 +27,28 @@ class SettingsProvider extends ChangeNotifier {
   bool _isVerifyingCep = false;
   String? _errorMessage;
 
+  /// Returns the [Store] instance
   Store? get store => _store;
+
+  /// Returns a new logo
   File? get newLogo => _newLogo;
+
+  /// Returns whether is loading
   bool get isLoading => _isLoading;
+
+  /// Returns whether is saving
   bool get isSaving => _isSaving;
+
+  /// Returns whether the user is editing
   bool get isEditing => _isEditing;
+
+  /// Returns whether the CEP is being verified
   bool get isVerifyingCep => _isVerifyingCep;
+
+  /// Returns an error message
   String? get errorMessage => _errorMessage;
+
+  /// Returns whether there is a Store
   bool get hasStore => _store != null;
 
   /// Loads the saved store.

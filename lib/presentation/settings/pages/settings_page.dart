@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/providers/app_settings_provider.dart';
+import '../../../ui/components/my_text_field.dart';
 import '../providers/settings_provider.dart';
 
 /// Displays and manages store settings.
@@ -182,23 +183,6 @@ class _SettingsPageState extends State<SettingsPage> {
     _zipCodeController.text = store.zipCode;
   }
 
-  Widget _buildField({
-    required String label,
-    required TextEditingController controller,
-    required bool enabled,
-    TextInputType keyboardType = TextInputType.text,
-  }) {
-    return TextField(
-      controller: controller,
-      enabled: enabled,
-      keyboardType: keyboardType,
-      decoration: InputDecoration(
-        labelText: label,
-        border: const OutlineInputBorder(),
-      ),
-    );
-  }
-
   Widget _buildLogoSection(
       SettingsProvider provider,
       bool canEdit,
@@ -247,10 +231,11 @@ class _SettingsPageState extends State<SettingsPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _buildField(
+        myTextField(
           label: l10n.cnpj,
           controller: _cnpjController,
           enabled: canEdit && !provider.isSaving,
+          maxLength: 14,
           keyboardType: TextInputType.number,
         ),
         Align(
@@ -275,12 +260,13 @@ class _SettingsPageState extends State<SettingsPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _buildField(
+        myTextField(
           label: l10n.zipCode,
           controller: _zipCodeController,
           enabled: canEdit &&
               !provider.isSaving &&
               !provider.isVerifyingCep,
+          maxLength: 8,
           keyboardType: TextInputType.number,
         ),
         Align(
@@ -321,39 +307,39 @@ class _SettingsPageState extends State<SettingsPage> {
       children: [
         _buildLogoSection(provider, canEdit, l10n),
         const SizedBox(height: 24),
-        _buildField(
+        myTextField(
           label: l10n.storeName,
           controller: _nameController,
           enabled: fieldsEnabled,
         ),
         const SizedBox(height: 16),
-        _buildField(
+        myTextField(
           label: l10n.companyName,
           controller: _companyNameController,
           enabled: fieldsEnabled,
         ),
         const SizedBox(height: 16),
         _buildCnpjField(provider, canEdit, l10n),
-        _buildField(
+        myTextField(
           label: l10n.street,
           controller: _streetController,
           enabled: fieldsEnabled,
         ),
         const SizedBox(height: 16),
-        _buildField(
+        myTextField(
           label: l10n.number,
           controller: _numberController,
           enabled: fieldsEnabled,
           keyboardType: TextInputType.number,
         ),
         const SizedBox(height: 16),
-        _buildField(
+        myTextField(
           label: l10n.city,
           controller: _cityController,
           enabled: fieldsEnabled,
         ),
         const SizedBox(height: 16),
-        _buildField(
+        myTextField(
           label: l10n.state,
           controller: _stateController,
           enabled: fieldsEnabled,
@@ -374,7 +360,7 @@ class _SettingsPageState extends State<SettingsPage> {
         child: FilledButton.icon(
           onPressed: provider.isSaving ? null : provider.startEditing,
           icon: const Icon(Icons.edit),
-          label: const Text('Edit'),
+          label: Text(l10n.edit),
         ),
       );
     }
@@ -398,7 +384,7 @@ class _SettingsPageState extends State<SettingsPage> {
           const SizedBox(height: 8),
           OutlinedButton(
             onPressed: provider.isSaving ? null : _cancelEditing,
-            child: const Text('Cancel'),
+            child: Text(l10n.cancel),
           ),
         ],
       ],

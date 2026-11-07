@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 
 /// Responsible for saving and deleting image files from the app's storage
 class ImageStorage {
+
   /// Saves an image to the application's permanent storage
   /// and returns the saved file path
   Future<String> save(File image) async {

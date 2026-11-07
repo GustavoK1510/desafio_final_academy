@@ -6,6 +6,7 @@ import '../../../core/localization/app_localizations.dart';
 import '../../../features/products/domain/entities/product.dart';
 import '../../../features/products/domain/usecases/product_use_case.dart';
 import '../../../ui/components/barcode_preview.dart';
+import '../../../ui/components/my_text_field.dart';
 import '../../../ui/components/product_image_picker.dart';
 import '../providers/product_form_provider.dart';
 
@@ -61,24 +62,27 @@ class _ProductFormContent extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildTextField(
+              myTextField(
                 controller: provider.nameController,
                 label: l10n.name,
                 icon: Icons.inventory_2_outlined,
               ),
               const SizedBox(height: 16),
-              _buildTextField(
+              myTextField(
                 controller: provider.brandController,
                 label: l10n.brand,
                 icon: Icons.business_outlined,
               ),
               const SizedBox(height: 16),
+
               _buildBarcodeField(context, provider),
+
               const SizedBox(height: 16),
-              _buildTextField(
+              myTextField(
                 controller: provider.priceController,
                 label: l10n.price,
                 icon: Icons.attach_money_outlined,
+                maxLength: 6,
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
@@ -135,23 +139,6 @@ class _ProductFormContent extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String label,
-    required IconData icon,
-    TextInputType? keyboardType,
-  }) {
-    return TextField(
-      controller: controller,
-      keyboardType: keyboardType,
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(icon),
-        border: const OutlineInputBorder(),
       ),
     );
   }

@@ -25,8 +25,13 @@ class OrderCartItem {
     this.discountPercentage = 0,
   });
 
+  /// Product
   final Product product;
+
+  /// Quantity
   final int quantity;
+
+  /// Discount percentage
   final double discountPercentage;
 
   /// Subtotal before discount.
@@ -67,6 +72,7 @@ class OrderFormProvider extends ChangeNotifier {
 
   List<Product> _products = [];
   String _productSearchQuery = '';
+  bool _isValidDiscount = true;
   bool _isLoadingProducts = false;
   String? _productErrorMessage;
 
@@ -77,6 +83,7 @@ class OrderFormProvider extends ChangeNotifier {
   String? _deliveryServiceErrorMessage;
   double _deliveryPrice = 0;
   double _deliveryDistance = 0;
+  DateTime _deliveryDate = DateTime.now();
 
   PaymentOption? _paymentOption;
   int _installments = 1;
@@ -116,6 +123,9 @@ class OrderFormProvider extends ChangeNotifier {
   /// Returns the product search query.
   String get productSearchQuery => _productSearchQuery;
 
+  /// Returns whether the discount is valid
+  bool get isValidDiscount => _isValidDiscount;
+
   /// Indicates whether products are loading.
   bool get isLoadingProducts => _isLoadingProducts;
 
@@ -151,6 +161,9 @@ class OrderFormProvider extends ChangeNotifier {
 
   /// Returns the total delivery price.
   double get deliveryPrice => _deliveryPrice;
+
+  /// Returns the estimated delivery date
+  DateTime get deliveryDate => _deliveryDate;
 
   /// Returns the distance between client and store.
   double get deliveryDistance => _deliveryDistance;
@@ -448,6 +461,12 @@ class OrderFormProvider extends ChangeNotifier {
 
     if (index == -1) return;
 
+    if (percentage > 100 || percentage < 0) {
+      _isValidDiscount = false;
+      _errorMessage = 'The discount should be between 0 and 100%';
+      notifyListeners();
+    }
+
     final normalizedPercentage =
     percentage.clamp(0.0, 100.0).toDouble();
 
@@ -479,6 +498,7 @@ class OrderFormProvider extends ChangeNotifier {
     _deliveryRoute = null;
     _deliveryDistance = 0;
     _deliveryPrice = 0;
+    _deliveryDate = DateTime.now().add(Duration(days: 20));
     _deliveryServiceErrorMessage = null;
     _isCalculatingRoute = true;
     notifyListeners();
@@ -532,7 +552,7 @@ class OrderFormProvider extends ChangeNotifier {
       case 0:
         return _selectedClient != null;
       case 1:
-        return hasProducts;
+        return hasProducts && isValidDiscount;
       case 2:
         return _selectedDeliveryService != null &&
             _deliveryRoute != null &&
@@ -621,7 +641,7 @@ class OrderFormProvider extends ChangeNotifier {
         installments: _installments,
         price: finalOrderTotal,
         deliveryPrice: _deliveryPrice,
-        deliveryDate: DateTime.now(),
+        deliveryDate: _deliveryDate,
         deliveryServiceId: _selectedDeliveryService!.id!,
         clientId: _selectedClient!.id!,
         deliveryDistance: _deliveryDistance,

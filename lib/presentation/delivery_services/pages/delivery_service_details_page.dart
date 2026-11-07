@@ -6,11 +6,14 @@ import '../providers/delivery_service_details_provider.dart';
 
 /// Displays all information about a delivery service.
 class DeliveryServiceDetailsPage extends StatelessWidget {
+
+  /// Class constructor
   const DeliveryServiceDetailsPage({
     required this.deliveryService,
     super.key,
   });
 
+  /// Current delivery service
   final DeliveryService deliveryService;
 
   @override

@@ -24,7 +24,6 @@ class ReadOnlyField extends StatelessWidget {
       readOnly: true,
       decoration: InputDecoration(
         labelText: label,
-        prefixIcon: const Icon(Icons.lock_outline),
         border: const OutlineInputBorder(),
       ),
     );

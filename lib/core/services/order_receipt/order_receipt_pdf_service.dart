@@ -15,6 +15,7 @@ import 'models/receipt_item_model.dart';
 
 /// Generates PDF receipts for orders.
 class OrderReceiptPdfService {
+
   /// Creates a receipt and opens the print preview.
   Future<void> generate({
     required Order order,

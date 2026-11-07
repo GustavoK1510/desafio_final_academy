@@ -4,6 +4,8 @@ import '../../../features/delivery_services/domain/entities/delivery_service.dar
 
 /// Provides the delivery service displayed on the details page.
 class DeliveryServiceDetailsProvider extends ChangeNotifier {
+
+  /// Class constructor
   DeliveryServiceDetailsProvider({
     required this._deliveryService,
   });

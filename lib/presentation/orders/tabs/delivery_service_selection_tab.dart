@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/localization/app_localizations.dart';
 import '../../../ui/components/delivery_route_map.dart';
 import '../../../ui/components/delivery_service_search_results.dart';
 import '../../../ui/components/error_message.dart';
@@ -17,6 +18,7 @@ class DeliveryServiceSelectionTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = context.watch<OrderFormProvider>();
     final deliveryService = provider.selectedDeliveryService;
+    final l10n = AppLocalizations.of(context)!;
 
     return ListView(
       padding: const EdgeInsets.all(20),
@@ -41,15 +43,15 @@ class DeliveryServiceSelectionTab extends StatelessWidget {
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
             labelText: 'Search delivery services',
-            hintText: 'Enter a name or CNPJ',
+            hintText: l10n.enterNameOrCNPJ,
             prefixIcon: IconButton(
-              tooltip: 'Search',
+              tooltip: l10n.search,
               onPressed: () => provider.searchDeliveryServices,
               icon: const Icon(Icons.search),
             ),
             suffixIcon: provider.deliveryServiceSearchQuery.isNotEmpty
                 ? IconButton(
-              tooltip: 'Clear search',
+              tooltip: l10n.clearSearch,
               onPressed: () => provider.searchDeliveryServices(''),
               icon: const Icon(Icons.clear),
             )
@@ -76,7 +78,12 @@ class DeliveryServiceSelectionTab extends StatelessWidget {
               selectedDeliveryService: deliveryService,
             ),
 
-        if (deliveryService != null) ...[
+        if (provider.store == null)
+          const Center(
+            child: Text('Verify your store address before continuing.'),
+          )
+
+        else if (deliveryService != null) ...[
 
           const SizedBox(height: 24),
 
@@ -94,6 +101,7 @@ class DeliveryServiceSelectionTab extends StatelessWidget {
 
           const SizedBox(height: 12),
 
+
           if (provider.isCalculatingRoute)
             const SizedBox(
               height: 300,
@@ -109,48 +117,55 @@ class DeliveryServiceSelectionTab extends StatelessWidget {
               client: provider.selectedClient!,
               route: provider.deliveryRoute!,
             ),
+            const SizedBox(height: 16),
 
-          const SizedBox(height: 16),
+            ReadOnlyField(
+              label: l10n.name,
+              value: deliveryService.name,
+            ),
 
-          ReadOnlyField(
-            label: 'Name',
-            value: deliveryService.name,
-          ),
+            const SizedBox(height: 12),
 
-          const SizedBox(height: 12),
+            ReadOnlyField(
+              label: l10n.companyName,
+              value: deliveryService.companyName,
+            ),
 
-          ReadOnlyField(
-            label: 'Company Name',
-            value: deliveryService.companyName,
-          ),
+            const SizedBox(height: 12),
 
-          const SizedBox(height: 12),
+            ReadOnlyField(
+              label: l10n.cnpj,
+              value: deliveryService.cnpj,
+            ),
 
-          ReadOnlyField(
-            label: 'CNPJ',
-            value: deliveryService.cnpj,
-          ),
+            const SizedBox(height: 12),
 
-          const SizedBox(height: 12),
+            ReadOnlyField(
+              label: l10n.costPerKilometer,
+              value: deliveryService.kmCost.toString(),
+            ),
 
-          ReadOnlyField(
-            label: 'Cost per KM',
-            value: deliveryService.kmCost.toString(),
-          ),
+            const SizedBox(height: 12),
 
-          const SizedBox(height: 12),
+            ReadOnlyField(
+              label: 'Estimated delivery date',
+              value: '${provider.deliveryDate.day}/'
+                '${provider.deliveryDate.month}/${provider.deliveryDate.year}',
+            ),
 
-          ReadOnlyField(
-            label: 'Delivery distance',
-            value: '${provider.deliveryDistance} km',
-          ),
+            const SizedBox(height: 12),
 
-          const SizedBox(height: 12),
+            ReadOnlyField(
+              label: 'Delivery distance',
+              value: '${provider.deliveryDistance.roundToDouble()} km',
+            ),
 
-          ReadOnlyField(
-            label: 'Total delivery price',
-            value: 'R\$ ${provider.deliveryPrice}',
-          ),
+            const SizedBox(height: 12),
+
+            ReadOnlyField(
+              label: 'Total delivery price',
+              value: 'R\$ ${provider.deliveryPrice}',
+            ),
         ],
       ],
     );

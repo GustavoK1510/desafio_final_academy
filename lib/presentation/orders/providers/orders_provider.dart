@@ -12,6 +12,8 @@ import '../../../features/store/domain/usecases/store_use_case.dart';
 
 /// Manages order listing, searching, deletion and PDF generation.
 class OrdersProvider extends ChangeNotifier {
+
+  /// Class constructor
   OrdersProvider({
     required this._orderUseCase,
     required this._clientUseCase,
@@ -36,9 +38,16 @@ class OrdersProvider extends ChangeNotifier {
   String? _errorMessage;
   String _searchQuery = '';
 
+  /// getter for the filtered orders list
   List<Order> get orders => filteredOrders;
+
+  /// Returns whether is loading
   bool get isLoading => _isLoading;
+
+  /// Returns an error message
   String? get errorMessage => _errorMessage;
+
+  /// Returns the search query
   String get searchQuery => _searchQuery;
 
   /// Returns orders filtered by the search query.

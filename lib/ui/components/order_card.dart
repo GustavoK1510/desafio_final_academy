@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../core/localization/app_localizations.dart';
 import '../../features/orders/domain/entities/order.dart';
 import '../../features/orders/domain/enums/payment_option.dart';
 
 /// Displays order information and its available actions.
 class OrderCard extends StatelessWidget {
+
+  /// Class constructor
   const OrderCard({
     super.key,
     required this.order,
@@ -15,23 +18,34 @@ class OrderCard extends StatelessWidget {
     required this.onGeneratePdf,
   });
 
+  /// Order
   final Order order;
+
+  /// Client name
   final String clientName;
+
+  /// Delivery service name
   final String deliveryServiceName;
+
+  /// onDelete function
   final VoidCallback onDelete;
+
+  /// Generates the PDF
   final VoidCallback onGeneratePdf;
 
+  /// Getter for total units
   int get totalUnits {
     return order.orderItems.fold<int>(
-      0,
-          (total, item) => total + item.quantity,
+      0, (total, item) => total + item.quantity,
     );
   }
 
+  /// Getter for formatted date
   String get formattedDate {
     return DateFormat('dd/MM/yyyy').format(order.deliveryDate);
   }
 
+  /// Getter for formatted price
   String get formattedPrice {
     return NumberFormat.currency(
       locale: 'pt_BR',
@@ -39,6 +53,7 @@ class OrderCard extends StatelessWidget {
     ).format(order.price);
   }
 
+  /// Getter for payment label
   String get paymentLabel {
     switch (order.paymentOption) {
       case PaymentOption.creditCard:
@@ -57,6 +72,7 @@ class OrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Card(
       margin: const EdgeInsets.symmetric(

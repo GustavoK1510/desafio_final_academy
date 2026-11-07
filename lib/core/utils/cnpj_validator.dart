@@ -1,5 +1,6 @@
 /// Validates Brazilian CNPJ numbers using their check digits.
 class CnpjValidator {
+
   /// Returns whether [cnpj] has valid check digits.
   static bool isValid(String cnpj) {
     final digits = cnpj.replaceAll(RegExp(r'\D'), '');

@@ -9,11 +9,14 @@ import '../providers/product_details_provider.dart';
 
 /// Displays all information about a product.
 class ProductDetailsPage extends StatelessWidget {
+
+  /// Class constructor
   const ProductDetailsPage({
     required this.product,
     super.key,
   });
 
+  /// Current product
   final Product product;
 
   @override
@@ -109,7 +112,7 @@ class _ProductDetailsContent extends StatelessWidget {
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: images.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 12),
+        separatorBuilder: (_, _) => const SizedBox(width: 12),
         itemBuilder: (context, index) {
           final image = images[index];
           final file = File(image.path);
