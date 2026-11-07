@@ -8,12 +8,15 @@ import 'core/providers/app_settings_provider.dart';
 import 'core/routes/app_router.dart';
 import 'core/services/brasil_api/brasil_api_service.dart';
 import 'core/services/geocoding/geocoding_service.dart';
+import 'core/services/order_receipt/order_receipt_pdf_service.dart';
 import 'core/services/routing/routing_service.dart';
 import 'core/storage/image_storage.dart';
 import 'features/clients/data/repositories/client_repository_impl.dart';
 import 'features/clients/domain/usecases/client_use_case.dart';
 import 'features/delivery_services/data/repositories/delivery_service_repository_impl.dart';
 import 'features/delivery_services/domain/usecases/delivery_service_use_case.dart';
+import 'features/orders/data/repositories/order_repository_impl.dart';
+import 'features/orders/domain/usecases/order_use_case.dart';
 import 'features/products/data/repositories/product_repository_impl.dart';
 import 'features/products/domain/usecases/product_use_case.dart';
 import 'features/store/data/repositories/store_repository_impl.dart';
@@ -29,6 +32,7 @@ Future<void> main() async {
   final geocodingService = GeocodingService();
   final brasilApiService = BrasilApiService();
   final routingService = RoutingService();
+  final orderReceiptPdf = OrderReceiptPdfService();
 
   final storeRepository = StoreRepositoryImpl(
     db: database,
@@ -65,12 +69,26 @@ Future<void> main() async {
     repository: deliveryServiceRepository,
   );
 
+  final orderRepository = OrderRepositoryImpl(
+      db: database
+  );
+
+  final orderUseCase = OrderUseCase(
+    orderRepository: orderRepository,
+    storeRepository: storeRepository,
+    clientRepository: clientRepository,
+    deliveryServiceRepository: deliveryServiceRepository,
+    routingService: routingService
+  );
+
   final appRouter = AppRouter(
     productUseCase: productUseCase,
     clientUseCase: clientUseCase,
     deliveryServiceUseCase: deliveryServiceUseCase,
     storeUseCase: storeUseCase,
+    orderUseCase: orderUseCase,
     routingService: routingService,
+    orderReceiptPdfService: orderReceiptPdf,
   );
 
   runApp(

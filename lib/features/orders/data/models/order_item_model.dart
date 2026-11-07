@@ -8,6 +8,7 @@ class OrderItemModel extends OrderItem {
     super.id,
     required super.orderId,
     required super.productId,
+    required super.discount,
     required super.quantity,
     required super.unitPrice,
   });
@@ -18,6 +19,7 @@ class OrderItemModel extends OrderItem {
       id: map['id'],
       orderId: map['order_id'],
       productId: map['product_id'],
+      discount: map['discount'],
       quantity: map['quantity'],
       unitPrice: map['unit_price'],
     );
@@ -29,6 +31,7 @@ class OrderItemModel extends OrderItem {
       'id': id,
       'order_id': orderId,
       'product_id': productId,
+      'discount': discount,
       'quantity': quantity,
       'unit_price': unitPrice,
     };

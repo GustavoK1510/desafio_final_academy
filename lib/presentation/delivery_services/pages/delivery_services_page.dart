@@ -145,6 +145,10 @@ class _DeliveryServicesContent extends StatelessWidget {
               deliveryService,
             );
           },
+
+          onTap: () {
+            context.push('/delivery-services/details', extra: deliveryService);
+          },
         );
       },
     );

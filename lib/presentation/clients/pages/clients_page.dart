@@ -143,6 +143,10 @@ class _ClientsContent extends StatelessWidget {
               client,
             );
           },
+
+          onTap: () {
+            context.push('/clients/details', extra: client);
+          },
         );
       },
     );

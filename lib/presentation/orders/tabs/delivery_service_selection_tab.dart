@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../ui/components/delivery_route_map.dart';
 import '../../../ui/components/delivery_service_search_results.dart';
 import '../../../ui/components/error_message.dart';
 import '../../../ui/components/read_only_field.dart';
@@ -83,6 +84,31 @@ class DeliveryServiceSelectionTab extends StatelessWidget {
             'Selected delivery service',
             style: Theme.of(context).textTheme.titleMedium,
           ),
+
+          const SizedBox(height: 24),
+
+          Text(
+            'Delivery route',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+
+          const SizedBox(height: 12),
+
+          if (provider.isCalculatingRoute)
+            const SizedBox(
+              height: 300,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            )
+          else if (provider.deliveryRoute != null &&
+              provider.store != null &&
+              provider.selectedClient != null)
+            DeliveryRouteMap(
+              store: provider.store!,
+              client: provider.selectedClient!,
+              route: provider.deliveryRoute!,
+            ),
 
           const SizedBox(height: 16),
 

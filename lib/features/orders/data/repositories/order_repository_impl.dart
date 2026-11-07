@@ -41,6 +41,7 @@ class OrderRepositoryImpl implements OrderRepository {
         await txn.insert('order_items', {
           'order_id': orderId,
           'product_id': orderItem.productId,
+          'discount': orderItem.discount,
           'quantity': orderItem.quantity,
           'unit_price': orderItem.unitPrice,
         });
@@ -165,6 +166,7 @@ class OrderRepositoryImpl implements OrderRepository {
           'order_items',
           {
             'product_id': orderItem.productId,
+            'discount': orderItem.discount,
             'quantity': orderItem.quantity,
             'unit_price': orderItem.unitPrice,
           },
@@ -180,6 +182,7 @@ class OrderRepositoryImpl implements OrderRepository {
           {
             'order_id': order.id!,
             'product_id': newOrderItem.productId,
+            'discount': newOrderItem.discount,
             'quantity': newOrderItem.quantity,
             'unit_price': newOrderItem.unitPrice,
           },

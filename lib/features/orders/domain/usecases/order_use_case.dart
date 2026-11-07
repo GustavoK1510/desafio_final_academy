@@ -1,22 +1,22 @@
+
 import '../../../../core/services/routing/routing_service.dart';
 import '../../../clients/domain/repositories/client_repository.dart';
 import '../../../delivery_services/domain/repositories/delivery_service_repository.dart';
-import '../../../products/domain/repositories/product_repository.dart';
 import '../../../store/domain/repositories/store_repository.dart';
 import '../entities/order.dart';
 import '../entities/order_item.dart';
+import '../enums/payment_option.dart';
 import '../repositories/order_repository.dart';
 
-/// Provides order-related application operations
+/// Provides order-related application operations.
 class OrderUseCase {
 
-  /// Class constructor
-  OrderUseCase ({
+  /// Class constructor.
+  OrderUseCase({
     required this._orderRepository,
     required this._clientRepository,
     required this._storeRepository,
     required this._deliveryServiceRepository,
-    required this._productRepository,
     required this._routingService,
   });
 
@@ -24,69 +24,111 @@ class OrderUseCase {
   final ClientRepository _clientRepository;
   final StoreRepository _storeRepository;
   final DeliveryServiceRepository _deliveryServiceRepository;
-  final ProductRepository _productRepository;
   final RoutingService _routingService;
 
-  /// Adds a new [Order]
+  /// Validates order items and calculates their discounted total.
+  Future<double> _calculateProductsPrice(List<OrderItem> items) async {
+    if (items.isEmpty) {
+      throw StateError('An order must contain at least one item.');
+    }
+
+    var productsPrice = 0.0;
+
+    for (final item in items) {
+      if (item.quantity <= 0) {
+        throw StateError('Product quantity must be greater than zero.');
+      }
+
+      if (item.unitPrice < 0) {
+        throw StateError('Product unit price cannot be negative.');
+      }
+
+      if (item.discount < 0 || item.discount > 100) {
+        throw StateError('Product discount must be between 0 and 100.');
+      }
+
+      // Calculates the item total after applying its discount.
+      final subtotal = item.unitPrice * item.quantity;
+      final discountAmount = subtotal * item.discount / 100;
+
+      productsPrice += subtotal - discountAmount;
+    }
+
+    return productsPrice;
+  }
+
+  /// Calculates the delivery price using the delivery service.
+  Future<double> _calculateDeliveryPrice({
+    required int clientId,
+    required int deliveryServiceId,
+  }) async {
+    final store = await _storeRepository.getStore();
+
+    if (store == null) {
+      throw StateError('Store information was not found.');
+    }
+
+    final client = await _clientRepository.getClient(clientId);
+
+    final deliveryService = await _deliveryServiceRepository
+        .getDeliveryService(deliveryServiceId);
+
+    // Calculates the route between the store and the client.
+    final route = await _routingService.getRoute(
+      startLatitude: store.latitude,
+      startLongitude: store.longitude,
+      endLatitude: client.latitude,
+      endLongitude: client.longitude,
+    );
+
+    final distance = route.distance;
+
+    // Calculates the delivery price.
+    var deliveryPrice = distance * deliveryService.kmCost;
+
+    // Applies the minimum delivery price when necessary.
+    if (deliveryService.minimumPrice != null &&
+        deliveryPrice < deliveryService.minimumPrice!) {
+      deliveryPrice = deliveryService.minimumPrice!;
+    }
+
+    return deliveryPrice;
+  }
+
+  /// Applies the credit-card surcharge when necessary.
+  double _calculateFinalPrice({
+    required double productsPrice,
+    required double deliveryPrice,
+    required Order order,
+  }) {
+    final subtotal = productsPrice + deliveryPrice;
+
+    if (order.paymentOption == PaymentOption.creditCard) {
+      return subtotal * 1.04;
+    }
+
+    return subtotal;
+  }
+
+  /// Adds a new order.
   Future<void> insertOrder(Order order) async {
+    if (order.installments < 1) {
+      throw StateError('Installments must be at least one.');
+    }
 
-    /// Gets the store data
-    final store = await _storeRepository.getStore();
-
-    /// Gets the client data
-    final client = await _clientRepository.getClient(order.clientId);
-
-    /// Calculates the route between them
-    final route  = await _routingService.getRoute(
-      startLatitude: store!.latitude,
-      startLongitude: store.longitude,
-      endLatitude: client.latitude,
-      endLongitude: client.longitude,
+    final deliveryPrice = await _calculateDeliveryPrice(
+      clientId: order.clientId,
+      deliveryServiceId: order.deliveryServiceId,
     );
 
-    /// Calculates the distance in kilometers
-    final distanceKm = route.distance/1000;
+    final productsPrice = await _calculateProductsPrice(order.orderItems);
 
-    /// Gets the delivery service data
-    final deliveryService = await _deliveryServiceRepository
-        .getDeliveryService(order.deliveryServiceId);
+    final totalPrice = _calculateFinalPrice(
+      productsPrice: productsPrice,
+      deliveryPrice: deliveryPrice,
+      order: order,
+    );
 
-    /// Calculates the delivery price
-    var deliveryPrice = distanceKm * deliveryService.kmCost;
-
-    /// Verifies if it is higher than the minimum price, if there is one
-    if (deliveryService.minimumPrice != null &&
-        deliveryPrice < deliveryService.minimumPrice!) {
-      deliveryPrice = deliveryService.minimumPrice!;
-    }
-
-    var productsPrice = 0.0;
-
-    final orderItems = <OrderItem>[];
-
-    for (final item in order.orderItems) {
-
-      /// Gets each product data
-      final product = await _productRepository.getProduct(item.productId);
-
-      /// Calculates the total products price
-      productsPrice += product.price * item.quantity;
-
-      /// Adds each item to the item list
-      orderItems.add(
-        OrderItem(
-          orderId: item.orderId,
-          productId: item.productId,
-          quantity: item.quantity,
-          unitPrice: product.price,
-        )
-      );
-    }
-
-    /// Calculates the total price
-    final totalPrice = productsPrice + deliveryPrice;
-
-    /// Creates an Order with the values
     final orderWithValues = Order(
       id: order.id,
       paymentOption: order.paymentOption,
@@ -95,88 +137,47 @@ class OrderUseCase {
       deliveryDate: order.deliveryDate,
       deliveryServiceId: order.deliveryServiceId,
       clientId: order.clientId,
-      deliveryDistance: distanceKm,
+      deliveryDistance: order.deliveryDistance,
       deliveryPrice: deliveryPrice,
       orderObs: order.orderObs,
       paymentObs: order.paymentObs,
-      orderItems: orderItems,
+      orderItems: order.orderItems,
     );
 
-    /// Sends it to the repository
-    await _orderRepository.insertOrder(orderWithValues, orderItems);
+    await _orderRepository.insertOrder(
+      orderWithValues,
+      order.orderItems,
+    );
   }
 
-  /// Retrieves all the Orders
+  /// Retrieves all orders.
   Future<List<Order>> getOrders() async {
-    final orders = await _orderRepository.getOrders();
-
-    return orders;
+    return await _orderRepository.getOrders();
   }
 
-  /// Updates an Order
+  /// Updates an existing order.
   Future<void> updateOrder(Order order) async {
+    if (order.id == null) {
+      throw StateError('Cannot update an order without an ID.');
+    }
 
-    /// Gets the store data
-    final store = await _storeRepository.getStore();
+    if (order.installments < 1) {
+      throw StateError('Installments must be at least one.');
+    }
 
-    /// Gets the client data
-    final client = await _clientRepository.getClient(order.clientId);
-
-    /// Calculates the route between them
-    final route  = await _routingService.getRoute(
-      startLatitude: store!.latitude,
-      startLongitude: store.longitude,
-      endLatitude: client.latitude,
-      endLongitude: client.longitude,
+    final deliveryPrice = await _calculateDeliveryPrice(
+      clientId: order.clientId,
+      deliveryServiceId: order.deliveryServiceId,
     );
 
-    /// Calculates the distance in kilometers
-    final distanceKm = route.distance/1000;
+    final productsPrice = await _calculateProductsPrice(order.orderItems);
 
-    /// Gets the delivery service data
-    final deliveryService = await _deliveryServiceRepository
-        .getDeliveryService(order.deliveryServiceId);
+    final totalPrice = _calculateFinalPrice(
+      productsPrice: productsPrice,
+      deliveryPrice: deliveryPrice,
+      order: order,
+    );
 
-    /// Calculates the delivery price
-    var deliveryPrice = distanceKm * deliveryService.kmCost;
-
-    /// Verifies if it is higher than the minimum price, if there is one
-    if (deliveryService.minimumPrice != null &&
-        deliveryPrice < deliveryService.minimumPrice!) {
-      deliveryPrice = deliveryService.minimumPrice!;
-    }
-
-    var productsPrice = 0.0;
-
-    final orderItems = <OrderItem>[];
-
-    for (final item in order.orderItems) {
-
-      /// Gets each product data
-      final product = await _productRepository.getProduct(item.productId);
-
-      /// Gets the unit price
-      final unitPrice = product.price;
-
-      /// Calculates the total products price
-      productsPrice += unitPrice * item.quantity;
-
-      /// Adds each item to the item list
-      orderItems.add(
-          OrderItem(
-            id: item.id,
-            orderId: item.orderId,
-            productId: item.productId,
-            quantity: item.quantity,
-            unitPrice: unitPrice,
-          )
-      );
-    }
-
-    /// Calculates the total price
-    final totalPrice = productsPrice + deliveryPrice;
-
-    /// Creates an Order with the values
     final orderWithValues = Order(
       id: order.id,
       paymentOption: order.paymentOption,
@@ -185,18 +186,20 @@ class OrderUseCase {
       deliveryDate: order.deliveryDate,
       deliveryServiceId: order.deliveryServiceId,
       clientId: order.clientId,
-      deliveryDistance: distanceKm,
+      deliveryDistance: order.deliveryDistance,
       deliveryPrice: deliveryPrice,
       orderObs: order.orderObs,
       paymentObs: order.paymentObs,
-      orderItems: orderItems,
+      orderItems: order.orderItems,
     );
 
-    /// Sends it to the repository
-    await _orderRepository.updateOrder(orderWithValues, orderItems);
+    await _orderRepository.updateOrder(
+      orderWithValues,
+      order.orderItems,
+    );
   }
 
-  /// Deletes an Order by it's ID
+  /// Deletes an order by its ID.
   Future<void> deleteOrder(int orderId) async {
     await _orderRepository.deleteOrder(orderId);
   }

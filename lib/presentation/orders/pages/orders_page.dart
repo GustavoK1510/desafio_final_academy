@@ -5,11 +5,13 @@ import '../../../core/localization/app_localizations.dart';
 import '../../../core/services/routing/routing_service.dart';
 import '../../../features/clients/domain/usecases/client_use_case.dart';
 import '../../../features/delivery_services/domain/usecases/delivery_service_use_case.dart';
+import '../../../features/orders/domain/usecases/order_use_case.dart';
 import '../../../features/products/domain/usecases/product_use_case.dart';
 import '../../../features/store/domain/usecases/store_use_case.dart';
 import '../providers/order_form_provider.dart';
 import '../tabs/client_selection_tab.dart';
 import '../tabs/delivery_service_selection_tab.dart';
+import '../tabs/order_review_tab.dart';
 import '../tabs/product_selection_tab.dart';
 
 /// Displays the multi-step order creation page.
@@ -21,6 +23,7 @@ class OrdersPage extends StatelessWidget {
     required this.productUseCase,
     required this.deliveryServiceUseCase,
     required this.storeUseCase,
+    required this.orderUseCase,
     required this.routingService,
     super.key,
   });
@@ -34,10 +37,13 @@ class OrdersPage extends StatelessWidget {
   /// Use case for retrieving delivery services.
   final DeliveryServiceUseCase deliveryServiceUseCase;
 
-  /// Use case for retrieving the store
+  /// Use case for retrieving the store.
   final StoreUseCase storeUseCase;
 
-  /// Routing service
+  /// Use case for saving the order
+  final OrderUseCase orderUseCase;
+
+  /// Routing service.
   final RoutingService routingService;
 
   @override
@@ -48,6 +54,7 @@ class OrdersPage extends StatelessWidget {
         productUseCase: productUseCase,
         deliveryServiceUseCase: deliveryServiceUseCase,
         storeUseCase: storeUseCase,
+        orderUseCase: orderUseCase,
         routingService: routingService,
       )
         ..loadClients()
@@ -65,7 +72,6 @@ class OrdersPage extends StatelessWidget {
 class _OrdersContent extends StatelessWidget {
   const _OrdersContent();
 
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -82,23 +88,26 @@ class _OrdersContent extends StatelessWidget {
           onTap: (index) {
             if (index > provider.currentStep) {
               controller.animateTo(provider.currentStep);
+              return;
             }
+
+            provider.goToStep(index);
           },
           tabs: [
             Tab(
-              icon: Icon(Icons.person_outline),
+              icon: const Icon(Icons.person_outline),
               text: l10n.clients,
             ),
             Tab(
-              icon: Icon(Icons.inventory_2_outlined),
+              icon: const Icon(Icons.inventory_2_outlined),
               text: l10n.products,
             ),
             Tab(
-              icon: Icon(Icons.local_shipping_outlined),
+              icon: const Icon(Icons.local_shipping_outlined),
               text: l10n.deliveryServices,
             ),
             Tab(
-              icon: Icon(Icons.receipt_long_outlined),
+              icon: const Icon(Icons.receipt_long_outlined),
               text: l10n.review,
             ),
           ],
@@ -113,75 +122,30 @@ class _OrdersContent extends StatelessWidget {
                 ClientSelectionTab(),
                 ProductSelectionTab(),
                 DeliveryServiceSelectionTab(),
-                const _LockedStep(
-                  title: 'Review',
-                  message: 'Order review will be implemented next.',
-                ),
+                const OrderReviewTab(),
               ],
             ),
           ),
-          SafeArea(
-            top: false,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                  onPressed: provider.canContinue
-                      ? () {
-                    provider.continueToNextStep();
-                    controller.animateTo(provider.currentStep);
-                  }
-                      : null,
-                  child: Text(
-                    provider.currentStep == 3
-                        ? l10n.finishOrder
-                        : l10n.next,
+          if (provider.currentStep < 3)
+            SafeArea(
+              top: false,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: FilledButton(
+                    onPressed: provider.canContinue
+                        ? () {
+                      provider.continueToNextStep();
+                      controller.animateTo(provider.currentStep);
+                    }
+                        : null,
+                    child: Text(l10n.next),
                   ),
                 ),
               ),
             ),
-          ),
         ],
-      ),
-    );
-  }
-}
-
-/// Displays a placeholder for a step that is not implemented yet.
-class _LockedStep extends StatelessWidget {
-  const _LockedStep({
-    required this.title,
-    required this.message,
-  });
-
-  final String title;
-  final String message;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(
-              Icons.lock_outline,
-              size: 48,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              title,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              message,
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
       ),
     );
   }

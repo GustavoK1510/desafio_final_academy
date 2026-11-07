@@ -114,6 +114,10 @@ class ProductsPage extends StatelessWidget {
           onDelete: () {
             _confirmDelete(context, product.id!);
           },
+
+          onTap: () {
+            context.push('/products/details', extra: product);
+          },
         );
       },
     );

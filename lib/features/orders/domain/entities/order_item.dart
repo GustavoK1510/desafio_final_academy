@@ -8,6 +8,7 @@ class OrderItem {
     this._id,
     required this._orderId,
     required this._productId,
+    required this._discount,
     required this._quantity,
     required this._unitPrice,
   });
@@ -15,6 +16,7 @@ class OrderItem {
   final int? _id;
   final int _orderId;
   final int _productId;
+  final double _discount;
   final int _quantity;
   final double _unitPrice;
 
@@ -26,6 +28,9 @@ class OrderItem {
 
   /// Getter for the product id
   int get productId => _productId;
+
+  /// Getter for the discount
+  double get discount => _discount;
 
   /// Getter for quantity
   int get quantity => _quantity;
