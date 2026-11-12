@@ -15,6 +15,10 @@ class ProductsProvider extends ChangeNotifier {
   List<Product> _products = [];
   bool _isLoading = false;
   String? _errorMessage;
+  String _searchQuery = '';
+
+  /// Getter for the filtered orders list
+  List<Product> get product => filteredProducts;
 
   /// Products currently available.
   List<Product> get products => List.unmodifiable(_products);
@@ -24,6 +28,28 @@ class ProductsProvider extends ChangeNotifier {
 
   /// Current error message.
   String? get errorMessage => _errorMessage;
+
+  /// Returns the search query
+  String get searchQuery => _searchQuery;
+
+  /// Returns orders filtered by the search query.
+  List<Product> get filteredProducts {
+    if (_searchQuery.isEmpty) {
+      return _products;
+    }
+
+    return _products.where((order) {
+      final orderId = order.id?.toString() ?? '';
+
+      return orderId.contains(_searchQuery);
+    }).toList();
+  }
+
+  /// Updates the order search query.
+  void searchProducts(String query) {
+    _searchQuery = query.trim();
+    notifyListeners();
+  }
 
   /// Loads all products.
   Future<void> loadProducts() async {

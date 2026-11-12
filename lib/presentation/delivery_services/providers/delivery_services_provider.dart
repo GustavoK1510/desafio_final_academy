@@ -16,6 +16,10 @@ class DeliveryServicesProvider extends ChangeNotifier {
   List<DeliveryService> _deliveryServices = [];
   bool _isLoading = false;
   String? _errorMessage;
+  String _searchQuery = '';
+
+  /// Getter for the filtered orders list
+  List<DeliveryService> get deliveryService => filteredDeliveryServices;
 
   /// Current delivery services.
   List<DeliveryService> get deliveryServices =>
@@ -26,6 +30,28 @@ class DeliveryServicesProvider extends ChangeNotifier {
 
   /// Current error message.
   String? get errorMessage => _errorMessage;
+
+  /// Returns the search query
+  String get searchQuery => _searchQuery;
+
+  /// Returns orders filtered by the search query.
+  List<DeliveryService> get filteredDeliveryServices {
+    if (_searchQuery.isEmpty) {
+      return _deliveryServices;
+    }
+
+    return _deliveryServices.where((order) {
+      final orderId = order.id?.toString() ?? '';
+
+      return orderId.contains(_searchQuery);
+    }).toList();
+  }
+
+  /// Updates the order search query.
+  void searchDeliveryServices(String query) {
+    _searchQuery = query.trim();
+    notifyListeners();
+  }
 
   /// Loads all delivery services.
   Future<void> loadDeliveryServices() async {

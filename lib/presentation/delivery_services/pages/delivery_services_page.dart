@@ -86,12 +86,34 @@ class _DeliveryServicesContent extends StatelessWidget {
     if (provider.errorMessage != null &&
         provider.deliveryServices.isEmpty) {
       return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Text(
-            provider.errorMessage!,
-            textAlign: TextAlign.center,
-          ),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: TextField(
+                onChanged: provider.searchDeliveryServices,
+                decoration: InputDecoration(
+                  hintText: 'Search delivery services by ID',
+                  prefixIcon: const Icon(Icons.search),
+                  suffixIcon: provider.searchQuery.isNotEmpty
+                      ? IconButton(
+                    onPressed: () {
+                      provider.searchDeliveryServices('');
+                    },
+                    icon: const Icon(Icons.clear),
+                  )
+                      : null,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+            ),
+            Text(
+              provider.errorMessage!,
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       );
     }

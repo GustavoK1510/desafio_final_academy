@@ -38,7 +38,7 @@ class OrdersProvider extends ChangeNotifier {
   String? _errorMessage;
   String _searchQuery = '';
 
-  /// getter for the filtered orders list
+  /// Getter for the filtered orders list
   List<Order> get orders => filteredOrders;
 
   /// Returns whether is loading

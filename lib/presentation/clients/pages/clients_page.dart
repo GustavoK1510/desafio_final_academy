@@ -84,12 +84,34 @@ class _ClientsContent extends StatelessWidget {
     if (provider.errorMessage != null &&
         provider.clients.isEmpty) {
       return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Text(
-            provider.errorMessage!,
-            textAlign: TextAlign.center,
-          ),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: TextField(
+                onChanged: provider.searchClients,
+                decoration: InputDecoration(
+                  hintText: 'Search clients by ID',
+                  prefixIcon: const Icon(Icons.search),
+                  suffixIcon: provider.searchQuery.isNotEmpty
+                      ? IconButton(
+                    onPressed: () {
+                      provider.searchClients('');
+                    },
+                    icon: const Icon(Icons.clear),
+                  )
+                      : null,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+            ),
+            Text(
+              provider.errorMessage!,
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       );
     }

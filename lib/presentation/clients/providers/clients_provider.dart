@@ -16,6 +16,10 @@ class ClientsProvider extends ChangeNotifier {
   List<Client> _clients = [];
   bool _isLoading = false;
   String? _errorMessage;
+  String _searchQuery = '';
+
+  /// Getter for the filtered orders list
+  List<Client> get client => filteredClients;
 
   /// Current clients.
   List<Client> get clients => List.unmodifiable(_clients);
@@ -25,6 +29,28 @@ class ClientsProvider extends ChangeNotifier {
 
   /// Current error message.
   String? get errorMessage => _errorMessage;
+
+  /// Returns the search query
+  String get searchQuery => _searchQuery;
+
+  /// Returns orders filtered by the search query.
+  List<Client> get filteredClients {
+    if (_searchQuery.isEmpty) {
+      return _clients;
+    }
+
+    return _clients.where((order) {
+      final orderId = order.id?.toString() ?? '';
+
+      return orderId.contains(_searchQuery);
+    }).toList();
+  }
+
+  /// Updates the order search query.
+  void searchClients(String query) {
+    _searchQuery = query.trim();
+    notifyListeners();
+  }
 
   /// Loads all clients.
   Future<void> loadClients() async {

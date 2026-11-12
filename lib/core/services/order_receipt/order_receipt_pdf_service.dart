@@ -1,9 +1,10 @@
 
 import 'dart:io';
 
+import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../features/clients/domain/entities/client.dart';
 import '../../../features/delivery_services/domain/entities/delivery_service.dart';
@@ -593,10 +594,28 @@ class OrderReceiptPdfService {
       ),
     );
 
-    /// Opens the generated PDF in the print preview.
-    await Printing.layoutPdf(
-      onLayout: (format) async => document.save(),
-      name: 'order_${order.id}_receipt.pdf',
+    /// Saves the generated PDF to a temporary file.
+    final pdfBytes = await document.save();
+    final temporaryDirectory = await getTemporaryDirectory();
+
+    final pdfFile = File(
+      '${temporaryDirectory.path}/order_receipt_${order.id}.pdf',
+    );
+
+    await pdfFile.writeAsBytes(pdfBytes, flush: true);
+
+    /// Opens the native sharing options.
+    await SharePlus.instance.share(
+      ShareParams(
+        files: [
+          XFile(
+            pdfFile.path,
+            mimeType: 'application/pdf',
+          ),
+        ],
+        title: 'Share order receipt',
+        subject: 'Order receipt',
+      ),
     );
   }
 }
